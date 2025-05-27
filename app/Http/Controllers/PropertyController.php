@@ -24,6 +24,7 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $this->authorize('update', $property);
+        $property->load('rules');
 
         return view('properties.edit', compact('property'));
     }
@@ -84,6 +85,12 @@ class PropertyController extends Controller
         ]);
 
         $property->update($validated);
+
+        $property->rules()->delete(); // remove old ones
+
+        foreach ($request->input('rules', []) as $ruleData) {
+            $property->rules()->create($ruleData);
+        }
 
         return redirect()->route('properties.index')->with('success', 'Property updated!');
     }

@@ -30,7 +30,10 @@ class PropertyApiController extends Controller
                 'location_country' => $property->location_country,
                 'google_map_url' => $property->google_map_url,
                 'location_description' => $property->location_description,
-                // TODO: Include wifi, owners, rules, faq, before_you_go in future
+                'rules' => $property->rules->map(fn ($rule) => [
+                    'title' => $rule->title,
+                    'description' => $rule->description,
+                ]),
             ],
         ]);
     }

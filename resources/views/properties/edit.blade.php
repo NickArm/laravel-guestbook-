@@ -83,6 +83,49 @@
             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                 Update Property
             </button>
+
+            <div class="mt-10">
+            <h3 class="text-lg font-semibold mb-4">Rules</h3>
+
+            <div id="rules-wrapper">
+                @foreach(old('rules', $property->rules ?? []) as $i => $rule)
+                    <div class="mb-4 border p-4 rounded bg-gray-50">
+                        <div class="mb-2">
+                            <label class="block font-medium">Title</label>
+                            <input type="text" name="rules[{{ $i }}][title]" value="{{ old("rules.$i.title", $rule['title'] ?? '') }}" class="w-full border p-2 rounded" required>
+                        </div>
+                        <div>
+                            <label class="block font-medium">Description</label>
+                            <textarea name="rules[{{ $i }}][description]" class="w-full border p-2 rounded" required>{{ old("rules.$i.description", $rule['description'] ?? '') }}</textarea>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <button type="button" onclick="addRule()" class="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">+ Add Rule</button>
+        </div>
+
         </form>
     </div>
 </x-app-layout>
+<script>
+    let ruleIndex = {{ count(old('rules', $property->rules ?? [])) }};
+
+    function addRule() {
+        const wrapper = document.getElementById('rules-wrapper');
+        const div = document.createElement('div');
+        div.classList.add('mb-4', 'border', 'p-4', 'rounded', 'bg-gray-50');
+        div.innerHTML = `
+            <div class="mb-2">
+                <label class="block font-medium">Title</label>
+                <input type="text" name="rules[${ruleIndex}][title]" class="w-full border p-2 rounded" required>
+            </div>
+            <div>
+                <label class="block font-medium">Description</label>
+                <textarea name="rules[${ruleIndex}][description]" class="w-full border p-2 rounded" required></textarea>
+            </div>
+        `;
+        wrapper.appendChild(div);
+        ruleIndex++;
+    }
+</script>

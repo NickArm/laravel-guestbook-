@@ -39,4 +39,9 @@ class Property extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function rules()
+    {
+        return $this->hasMany(Rule::class);
+    }
 }
