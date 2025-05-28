@@ -7,10 +7,9 @@ use App\Models\Property;
 
 class PropertyApiController extends Controller
 {
-    public function show($subdomain)
+    public function show($slug)
     {
-        $subdomain = explode('.', request()->getHost())[0];
-        $property = Property::where('slug', $subdomain)->firstOrFail();
+        $property = Property::where('slug', $slug)->firstOrFail();
 
         return response()->json([
             'property' => [
