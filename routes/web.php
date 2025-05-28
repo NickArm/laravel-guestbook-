@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -18,12 +19,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,7 +51,6 @@ Route::middleware(['auth', 'is_superadmin'])->prefix('admin')->group(function ()
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
     Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
     Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
     Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');

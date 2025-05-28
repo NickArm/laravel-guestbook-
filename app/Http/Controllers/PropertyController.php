@@ -8,17 +8,11 @@ use Illuminate\Support\Str;
 
 class PropertyController extends Controller
 {
-    public function index()
-    {
-        $user = auth()->user();
-        $properties = $user->properties;
-
-        return view('properties.index', compact('properties'));
-    }
-
     public function create()
     {
-        return view('properties.create');
+        $property = new Property;
+
+        return view('properties.create', compact('property'));
     }
 
     public function edit(Property $property)
@@ -92,7 +86,7 @@ class PropertyController extends Controller
             $property->rules()->create($ruleData);
         }
 
-        return redirect()->route('properties.index')->with('success', 'Property updated!');
+        return redirect()->route('dashboard')->with('success', 'Property updated!');
     }
 
     public function destroy(Property $property)

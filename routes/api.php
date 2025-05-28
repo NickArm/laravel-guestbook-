@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::domain('{slug}.welcomy.net')->group(function () {
-    Route::get('/api/property', [PropertyApiController::class, 'show']);
+    Route::get('/property', [PropertyApiController::class, 'show']);
 });
