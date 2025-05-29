@@ -42,6 +42,10 @@ class PropertyApiController extends Controller
                     'password' => $property->wifi->password,
                     'description' => $property->wifi->description,
                 ] : null,
+                'transportation' => $property->transportation->map(fn ($t) => [
+                    'title' => $t->title,
+                    'description' => $t->description,
+                ]),
             ],
         ]);
     }

@@ -4,7 +4,7 @@
      <!-- Logo -->
      <div class="flex items-center gap-2 lg:gap-5 2xl:-ml-[60px]">
       <a href="html/demo2.html">
-       <img class="dark:hidden max-w-[40px] logo" src="assets/media/logos/welcomy-icon.jpg"/>
+       <img class="dark:hidden max-w-[40px] logo" src="{{ asset('assets/media/logos/welcomy-icon.jpg') }}"/>
        <img class="hidden dark:inline-block min-h-[42px]" src="assets/media/app/mini-logo-circle-dark.svg"/>
       </a>
       <div class="flex items-center">

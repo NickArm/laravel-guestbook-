@@ -54,4 +54,9 @@ class Property extends Model
     {
         return $this->hasOne(Wifi::class);
     }
+
+    public function transportation()
+    {
+        return $this->hasMany(Transportation::class);
+    }
 }

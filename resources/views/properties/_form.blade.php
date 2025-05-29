@@ -34,6 +34,10 @@
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary"></span>
                             Location
                         </a>
+                        <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_transportation">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary"></span>
+                            Transportation
+                        </a>
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_rules">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
@@ -189,6 +193,30 @@
                     </div>
                 </div>
 
+                <!-- Transportation Section -->
+                <div class="card pb-2.5" id="section_transportation">
+                    <div class="card-header flex justify-between items-center">
+                        <h3 class="card-title">Transportation</h3>
+                        <label class="switch">
+                            <input type="checkbox" name="enabled_pages[]" value="transportation"
+                                {{ in_array('transportation', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
+                            <span class="switch-label">Enabled</span>
+                        </label>
+                    </div>
+                    <div class="card-body grid gap-5">
+                        <div id="transportation-container" class="grid gap-4">
+                            @foreach(old('transportation', $property->transportation->toArray() ?? []) as $index => $t)
+                                <div class="transportation-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
+                                    <button type="button" class="absolute top-2 right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
+                                    <input type="text" name="transportation[{{ $index }}][title]" class="input" placeholder="Title" value="{{ $t['title'] ?? '' }}">
+                                    <textarea name="transportation[{{ $index }}][description]" class="input" placeholder="Description" rows="2">{{ $t['description'] ?? '' }}</textarea>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button type="button" id="add-transportation-btn" class="btn btn-sm btn-light mt-4">+ Add Transportation</button>
+                    </div>
+                </div>
+
 
                 <!-- Rules Section -->
                 <div class="card pb-2.5" id="section_rules">
@@ -300,5 +328,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tContainer = document.getElementById('transportation-container');
+    const tAddBtn = document.getElementById('add-transportation-btn');
+    let tIndex = {{ count(old('transportation', $property->transportation ?? [])) }};
 
+    tAddBtn?.addEventListener('click', () => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'transportation-group grid gap-2 p-4 border rounded-md bg-gray-50 relative';
+        wrapper.innerHTML = `
+            <button type="button" class="absolute top-2 right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
+            <input type="text" name="transportation[${tIndex}][title]" class="input" placeholder="Title" />
+            <textarea name="transportation[${tIndex}][description]" class="input" placeholder="Description" rows="2"></textarea>
+        `;
+        tContainer.appendChild(wrapper);
+        tIndex++;
+    });
+
+    tContainer?.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-transportation')) {
+            e.target.closest('.transportation-group').remove();
+        }
+    });
+});
+</script>
 @endpush

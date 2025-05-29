@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Services\PropertyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PropertyController extends Controller
 {
+    protected PropertyService $propertyService;
+
+    public function __construct(PropertyService $propertyService)
+    {
+        $this->propertyService = $propertyService;
+    }
+
     public function create()
     {
         $property = new Property;
@@ -18,7 +26,7 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $this->authorize('update', $property);
-        $property->load(['rules', 'faqs', 'wifi']);
+        $property->load(['rules', 'faqs', 'wifi', 'transportation']);
 
         return view('properties.edit', compact('property'));
     }
@@ -52,11 +60,7 @@ class PropertyController extends Controller
             'location_description' => $request->location_description,
         ]);
 
-        $property->wifi()->create([
-            'network' => $request->input('wifi.network'),
-            'password' => $request->input('wifi.password'),
-            'description' => $request->input('wifi.description'),
-        ]);
+        $this->propertyService->syncExtras($property, $request);
 
         return redirect()->route('dashboard')->with('success', 'Property created!');
     }
@@ -87,29 +91,14 @@ class PropertyController extends Controller
             'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
         ]);
 
-        $wifiData = $request->input('wifi');
-        if ($wifiData) {
-            $property->wifi()->updateOrCreate([], $wifiData);
-        }
-
         $property->update($validated);
         $property->update([
             'enabled_pages' => $request->input('enabled_pages', []),
         ]);
 
-        $property->rules()->delete();
+        $this->propertyService->syncExtras($property, $request);
 
-        foreach ($request->input('rules', []) as $ruleData) {
-            $property->rules()->create($ruleData);
-        }
-
-        $property->faqs()->delete();
-
-        foreach ($request->input('faqs', []) as $faqData) {
-            $property->faqs()->create($faqData);
-        }
-
-        return redirect()->route('dashboard')->with('success', 'Property updated!');
+        return redirect()->route('properties.edit', $property)->with('success', 'Property updated!');
     }
 
     public function destroy(Property $property)
