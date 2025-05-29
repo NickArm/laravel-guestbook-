@@ -77,11 +77,18 @@
                         @foreach([
                             ['welcome_message', 'Welcome Message'],
                         ] as [$name, $label])
+                            @php
+                                $value = old($name, $property->$name ?? '');
+                            @endphp
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <textarea class="input" name="{{ $name }}" rows="3">{{ old($name, $property->$name ?? '') }}</textarea>
+                                <div class="grow">
+                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                </div>
                             </div>
                         @endforeach
+
                     </div>
                 </div>
 
@@ -99,11 +106,18 @@
                         @foreach([
                             ['amenities_description', 'Amenities Description'],
                         ] as [$name, $label])
+                            @php
+                                $value = old($name, $property->$name ?? '');
+                            @endphp
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <textarea class="input" name="{{ $name }}" rows="3">{{ old($name, $property->$name ?? '') }}</textarea>
+                                <div class="grow">
+                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                </div>
                             </div>
                         @endforeach
+
                     </div>
                 </div>
 
@@ -132,10 +146,17 @@
                             <input type="text" name="wifi[password]" class="input" value="{{ $wifi['password'] ?? '' }}">
                         </div>
 
+                        @php
+                            $wifiDescription = old('wifi.description', $wifi['description'] ?? '');
+                        @endphp
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label max-w-56">WiFi Description</label>
-                            <textarea class="input" name="wifi[description]" rows="3">{{ $wifi['description'] ?? '' }}</textarea>
+                            <div class="grow">
+                                <input id="wifi_description" type="hidden" name="wifi[description]" value="{{ $wifiDescription }}">
+                                <trix-editor input="wifi_description"></trix-editor>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -160,11 +181,18 @@
                             ['checkin_instructions', 'Check-in Instructions'],
                             ['checkout_instructions', 'Check-out Instructions'],
                         ] as [$name, $label])
+                            @php
+                                $value = old($name, $property->$name ?? '');
+                            @endphp
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <textarea class="input" name="{{ $name }}" rows="3">{{ old($name, $property->$name ?? '') }}</textarea>
+                                <div class="grow">
+                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                </div>
                             </div>
                         @endforeach
+
                     </div>
                 </div>
 
@@ -186,10 +214,17 @@
                         @endforeach
 
                         @php $name = 'location_description'; $label = 'Location Description'; @endphp
+                       @php
+                            $value = old($name, $property->$name ?? '');
+                        @endphp
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label max-w-56">{{ $label }}</label>
-                            <textarea class="input" name="{{ $name }}" rows="3">{{ old($name, $property->$name ?? '') }}</textarea>
+                            <div class="grow">
+                                <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                <trix-editor input="{{ $name }}"></trix-editor>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -209,7 +244,7 @@
                                 <div class="transportation-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
                                     <button type="button" class="absolute top-2 right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
                                     <input type="text" name="transportation[{{ $index }}][title]" class="input" placeholder="Title" value="{{ $t['title'] ?? '' }}">
-                                    <textarea name="transportation[{{ $index }}][description]" class="input" placeholder="Description" rows="2">{{ $t['description'] ?? '' }}</textarea>
+                                    <input type="text" name="transportation[{{ $index }}][description]" class="input" placeholder="Description" value="{{ $t['description'] ?? '' }}">
                                 </div>
                             @endforeach
                         </div>
@@ -234,9 +269,10 @@
                                 <div class="rule-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
                                     <button type="button" class="absolute top-2 right-2 text-red-600 remove-rule" title="Remove">&times;</button>
                                     <input type="text" name="rules[{{ $index }}][title]" placeholder="Title" class="input" value="{{ $rule['title'] ?? '' }}">
-                                    <textarea name="rules[{{ $index }}][description]" placeholder="Description" class="input" rows="2">{{ $rule['description'] ?? '' }}</textarea>
+                                    <input type="text" name="rules[{{ $index }}][description]" placeholder="Description" class="input" value="{{ $rule['description'] ?? '' }}">
                                 </div>
                             @endforeach
+
                         </div>
                         <button type="button" id="add-rule-btn" class="btn btn-sm btn-light mt-4">+ Add Rule</button>
                     </div>
@@ -259,7 +295,8 @@
                                     <button type="button" class="absolute top-2 right-2 text-red-600 remove-faq" title="Remove">&times;</button>
                                     <input type="text" name="faqs[{{ $index }}][question]" class="input" placeholder="Question"
                                         value="{{ $faq['question'] ?? '' }}">
-                                    <textarea name="faqs[{{ $index }}][answer]" class="input" placeholder="Answer" rows="2">{{ $faq['answer'] ?? '' }}</textarea>
+                                    <input type="text" name="faqs[{{ $index }}][answer]" class="input" placeholder="Answer"
+                                        value="{{ $faq['answer'] ?? '' }}">
                                 </div>
                             @endforeach
                         </div>
