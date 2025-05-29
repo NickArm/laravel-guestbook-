@@ -33,8 +33,8 @@
         </h1>
        </div>
        <div class="flex items-center gap-2.5">
-        <a class="btn btn-sm btn-light" href="#">
-         Import CSV
+        <a disabled class="btn btn-sm btn-light" href="#">
+         Check API Reponse
         </a>
         <a class="btn btn-sm btn-primary" href="{{ route('properties.create') }}">
          Add Property
