@@ -39,10 +39,11 @@
 
     <!-- Metronic Styles -->
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     @stack('styles')
 </head>
- <body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:#fefefe] [--tw-page-bg-dark:var(--tw-coal-500)] demo1 sidebar-fixed header-fixed bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
+<body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-light)] [--tw-page-bg-dark:var(--tw-coal-500)] [--tw-header-height-default:100px] [[data-sticky-header=on]&]:[--tw-header-height:60px] [--tw-header-height:--tw-header-height-default] bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
+
 
   <!-- Theme Mode -->
   <script>

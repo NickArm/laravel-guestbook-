@@ -7,27 +7,30 @@
   <!-- Page -->
   <!-- Main -->
   <div class="flex grow">
-   <!-- Sidebar -->
-    @include('partials.sidebar')
-   <!-- End of Sidebar -->
    <!-- Wrapper -->
    <div class="wrapper flex grow flex-col">
     <!-- Header -->
     @include('partials.header')
     <!-- End of Header -->
+    <!-- Navbar -->
+    @include('partials.navbar')
+    <!-- End of Navbar -->
+    <!-- Toolbar -->
+    {{-- @include('partials.toolbar') --}}
+    <!-- End of Toolbar -->
     <!-- Content -->
     <main class="grow" id="content" role="content">
-        <div class="container-fluid">
+
             <div class="grid gap-5 lg:gap-7.5">
-@include('properties._form', [
-    'action' => route('properties.update', $property),
-    'method' => 'PUT',
-    'property' => $property,
-    'submitLabel' => 'Update Property'
-])
+                @include('properties._form', [
+                    'action' => route('properties.update', $property),
+                    'method' => 'PUT',
+                    'property' => $property,
+                    'submitLabel' => 'Update Property'
+                ])
 
             </div>
-        </div>
+
     </main>
     <!-- End of Content -->
     <!-- Footer -->

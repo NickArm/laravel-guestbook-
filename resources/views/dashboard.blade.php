@@ -7,14 +7,17 @@
   <!-- Page -->
   <!-- Main -->
   <div class="flex grow">
-   <!-- Sidebar -->
-    @include('partials.sidebar')
-   <!-- End of Sidebar -->
    <!-- Wrapper -->
    <div class="wrapper flex grow flex-col">
     <!-- Header -->
     @include('partials.header')
     <!-- End of Header -->
+    <!-- Navbar -->
+    @include('partials.navbar')
+    <!-- End of Navbar -->
+    <!-- Toolbar -->
+    {{-- @include('partials.toolbar') --}}
+    <!-- End of Toolbar -->
     <!-- Content -->
     <main class="grow content pt-5" id="content" role="content">
      <!-- Container -->

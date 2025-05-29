@@ -18,7 +18,7 @@ class PropertyController extends Controller
     public function edit(Property $property)
     {
         $this->authorize('update', $property);
-        $property->load('rules');
+        $property->load(['rules', 'faqs', 'wifi']);
 
         return view('properties.edit', compact('property'));
     }
@@ -37,7 +37,7 @@ class PropertyController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->slug ?? $request->name),
             'address' => $request->address,
-            'enabled_pages' => [],
+            'enabled_pages' => $request->input('enabled_pages', []),
             'is_active' => true,
             'checkin' => $request->checkin,
             'checkin_instructions' => $request->checkin_instructions,
@@ -50,6 +50,12 @@ class PropertyController extends Controller
             'location_country' => $request->location_country,
             'google_map_url' => $request->google_map_url,
             'location_description' => $request->location_description,
+        ]);
+
+        $property->wifi()->create([
+            'network' => $request->input('wifi.network'),
+            'password' => $request->input('wifi.password'),
+            'description' => $request->input('wifi.description'),
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Property created!');
@@ -74,16 +80,33 @@ class PropertyController extends Controller
             'location_country' => 'nullable',
             'google_map_url' => 'nullable|url',
             'location_description' => 'nullable',
+            'wifi.network' => 'nullable|string|max:255',
+            'wifi.password' => 'nullable|string|max:255',
+            'wifi.description' => 'nullable|string',
         ], [
             'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
         ]);
 
-        $property->update($validated);
+        $wifiData = $request->input('wifi');
+        if ($wifiData) {
+            $property->wifi()->updateOrCreate([], $wifiData);
+        }
 
-        $property->rules()->delete(); // remove old ones
+        $property->update($validated);
+        $property->update([
+            'enabled_pages' => $request->input('enabled_pages', []),
+        ]);
+
+        $property->rules()->delete();
 
         foreach ($request->input('rules', []) as $ruleData) {
             $property->rules()->create($ruleData);
+        }
+
+        $property->faqs()->delete();
+
+        foreach ($request->input('faqs', []) as $faqData) {
+            $property->faqs()->create($faqData);
         }
 
         return redirect()->route('dashboard')->with('success', 'Property updated!');

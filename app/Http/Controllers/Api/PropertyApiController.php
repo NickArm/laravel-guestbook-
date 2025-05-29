@@ -33,6 +33,15 @@ class PropertyApiController extends Controller
                     'title' => $rule->title,
                     'description' => $rule->description,
                 ]),
+                'faq' => $property->faqs->map(fn ($faq) => [
+                    'question' => $faq->question,
+                    'answer' => $faq->answer,
+                ]),
+                'wifi' => $property->wifi ? [
+                    'network' => $property->wifi->network,
+                    'password' => $property->wifi->password,
+                    'description' => $property->wifi->description,
+                ] : null,
             ],
         ]);
     }

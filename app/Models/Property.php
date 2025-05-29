@@ -44,4 +44,14 @@ class Property extends Model
     {
         return $this->hasMany(Rule::class);
     }
+
+    public function faqs()
+    {
+        return $this->hasMany(Faq::class);
+    }
+
+    public function wifi()
+    {
+        return $this->hasOne(Wifi::class);
+    }
 }
