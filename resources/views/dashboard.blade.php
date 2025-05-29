@@ -47,126 +47,82 @@
      <div class="container-fixed">
       <div class="grid gap-5 lg:gap-7.5">
        <div class="card card-grid min-w-full">
-        {{-- <div class="card-header flex-wrap gap-2">
-         <h3 class="card-title font-medium text-sm">
-          Showing 20 of 68 users
-         </h3>
-         <div class="flex flex-wrap gap-2 lg:gap-5">
-          <div class="flex">
-           <label class="input input-sm">
-            <i class="ki-filled ki-magnifier">
-            </i>
-            <input data-datatable-search="#team_crew_table" placeholder="Search users" type="text" value="">
-            </input>
-           </label>
-          </div>
-          <div class="flex flex-wrap gap-2.5">
-           <select class="select select-sm w-28">
-            <option value="1">
-             Active
-            </option>
-            <option value="2">
-             Disabled
-            </option>
-            <option value="2">
-             Pending
-            </option>
-           </select>
-           <select class="select select-sm w-28">
-            <option value="1">
-             Latest
-            </option>
-            <option value="2">
-             Older
-            </option>
-            <option value="3">
-             Oldest
-            </option>
-           </select>
-           <button class="btn btn-sm btn-outline btn-primary">
-            <i class="ki-filled ki-setting-4">
-            </i>
-            Filters
-           </button>
-          </div>
-         </div>
-        </div> --}}
         <div class="card-body">
          <div data-datatable="true" data-datatable-state-save="false" id="team_crew_table">
           <div class="scrollable-x-auto">
-<table class="table table-auto table-border" data-datatable-table="true">
-    <thead>
-        <tr>
-            <th class="min-w-[200px]">
-                <span class="sort asc">
-                    <span class="sort-label font-normal text-gray-700">Property Name</span>
-                </span>
-            </th>
-            <th class="min-w-[200px]">
-                <span class="sort">
-                    <span class="sort-label font-normal text-gray-700">Slug</span>
-                </span>
-            </th>
-            <th class="min-w-[150px]">
-                <span class="sort">
-                    <span class="sort-label font-normal text-gray-700">Check-in</span>
-                </span>
-            </th>
-            <th class="min-w-[150px]">
-                <span class="sort">
-                    <span class="sort-label font-normal text-gray-700">Check-out</span>
-                </span>
-            </th>
-            <th class="w-[100px] text-center">
-                <span class="sort-label font-normal text-gray-700">Actions</span>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($properties as $property)
-            <tr>
-                <td class="text-gray-800 font-medium">{{ $property->name }}</td>
-                <td class="text-gray-800">{{ $property->slug }}</td>
-                <td class="text-gray-800">{{ $property->checkin }}</td>
-                <td class="text-gray-800">{{ $property->checkout }}</td>
-                <td class="text-center">
-                    <div class="menu flex-inline" data-menu="true">
-                        <div class="menu-item" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
-                            <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
-                                <i class="ki-filled ki-dots-vertical"></i>
-                            </button>
-                            <div class="menu-dropdown menu-default max-w-[150px]" data-menu-dismiss="true">
-                                <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('properties.edit', $property) }}">
-                                        <span class="menu-icon"><i class="ki-filled ki-pencil"></i></span>
-                                        <span class="menu-title">Edit</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('properties.edit', $property) }}">
-                                        <span class="menu-icon"><i class="ki-filled ki-eye"></i></span>
-                                        <span class="menu-title">View</span>
-                                    </a>
-                                </div>
-                                <div class="menu-separator"></div>
-                                <div class="menu-item">
-                                    <form method="POST" action="{{ route('properties.destroy', $property) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="menu-link w-full text-left">
-                                            <span class="menu-icon"><i class="ki-filled ki-trash"></i></span>
-                                            <span class="menu-title">Delete</span>
+            <table class="table table-auto table-border" data-datatable-table="true">
+                <thead>
+                    <tr>
+                        <th class="min-w-[200px]">
+                            <span class="sort asc">
+                                <span class="sort-label font-normal text-gray-700">Property Name</span>
+                            </span>
+                        </th>
+                        <th class="min-w-[200px]">
+                            <span class="sort">
+                                <span class="sort-label font-normal text-gray-700">Slug</span>
+                            </span>
+                        </th>
+                        <th class="min-w-[150px]">
+                            <span class="sort">
+                                <span class="sort-label font-normal text-gray-700">Check-in</span>
+                            </span>
+                        </th>
+                        <th class="min-w-[150px]">
+                            <span class="sort">
+                                <span class="sort-label font-normal text-gray-700">Check-out</span>
+                            </span>
+                        </th>
+                        <th class="w-[100px] text-center">
+                            <span class="sort-label font-normal text-gray-700">Actions</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($properties as $property)
+                        <tr>
+                            <td class="text-gray-800 font-medium">{{ $property->name }}</td>
+                            <td class="text-gray-800">{{ $property->slug }}</td>
+                            <td class="text-gray-800">{{ $property->checkin }}</td>
+                            <td class="text-gray-800">{{ $property->checkout }}</td>
+                            <td class="text-center">
+                                <div class="menu flex-inline" data-menu="true">
+                                    <div class="menu-item" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
+                                        <button class="menu-toggle btn btn-sm btn-icon btn-light btn-clear">
+                                            <i class="ki-filled ki-dots-vertical"></i>
                                         </button>
-                                    </form>
+                                        <div class="menu-dropdown menu-default max-w-[150px]" data-menu-dismiss="true">
+                                            <div class="menu-item">
+                                                <a class="menu-link" href="{{ route('properties.edit', $property) }}">
+                                                    <span class="menu-icon"><i class="ki-filled ki-pencil"></i></span>
+                                                    <span class="menu-title">Edit</span>
+                                                </a>
+                                            </div>
+                                            <div class="menu-item">
+                                                <a class="menu-link" href="{{ route('properties.edit', $property) }}">
+                                                    <span class="menu-icon"><i class="ki-filled ki-eye"></i></span>
+                                                    <span class="menu-title">View</span>
+                                                </a>
+                                            </div>
+                                            <div class="menu-separator"></div>
+                                            <div class="menu-item">
+                                                <form method="POST" action="{{ route('properties.destroy', $property) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="menu-link w-full text-left">
+                                                        <span class="menu-icon"><i class="ki-filled ki-trash"></i></span>
+                                                        <span class="menu-title">Delete</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
           </div>
           <div class="card-footer justify-center md:justify-between flex-col md:flex-row gap-5 text-gray-600 text-2sm font-medium">
@@ -244,4 +200,4 @@
   </div>
   <!-- End of Main -->
   <!-- End of Page -->
-`@endsection
+@endsection

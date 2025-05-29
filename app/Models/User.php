@@ -13,6 +13,10 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'is_active',
+        'bio',
+        'address',
+        'mobile_number',
+        'contact_me',
     ];
 
     protected $hidden = [
@@ -22,6 +26,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'contact_me' => 'array',
     ];
 
     public function properties()

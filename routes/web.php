@@ -5,58 +5,74 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Public Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::redirect('/', '/login');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-    ->name('login');
-
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-Route::middleware(['auth', 'is_superadmin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('status', 'verification-link-sent');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password');
+    });
+
+    // Properties
+    Route::prefix('properties')->name('properties.')->group(function () {
+        Route::get('/create', [PropertyController::class, 'create'])->name('create');
+        Route::post('/', [PropertyController::class, 'store'])->name('store');
+        Route::get('/{property}/edit', [PropertyController::class, 'edit'])->name('edit');
+        Route::put('/{property}', [PropertyController::class, 'update'])->name('update');
+        Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
+        Route::patch('/{property}/toggle', [PropertyController::class, 'toggleActive'])->name('toggle');
     });
 });
 
-Route::middleware(['auth', 'is_superadmin'])->prefix('admin')->group(function () {
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-});
+/*
+|--------------------------------------------------------------------------
+| Superadmin Routes
+|--------------------------------------------------------------------------
+*/
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
-    Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
-    Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
-    Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
-    Route::delete('/properties/{property}', [PropertyController::class, 'destroy'])->name('properties.destroy');
-    Route::patch('/properties/{property}/toggle', [PropertyController::class, 'toggleActive'])->name('properties.toggle');
-});
+Route::middleware(['auth', 'is_superadmin'])->prefix('admin')->name('admin.')->group(function () {
 
-// require __DIR__.'/auth.php';
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+    });
+});

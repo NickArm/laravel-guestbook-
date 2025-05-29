@@ -103,7 +103,7 @@
          </div>
          <div class="flex flex-col">
           <div class="menu-item">
-           <a class="menu-link" href="html/demo2/account/home/user-profile.html">
+           <a class="menu-link" href="route('profile.edit')">
             <span class="menu-icon">
              <i class="ki-filled ki-profile-circle">
              </i>
@@ -113,97 +113,7 @@
             </span>
            </a>
           </div>
-          <div class="menu-item" data-menu-item-offset="-50px, 0" data-menu-item-placement="left-start" data-menu-item-placement-rtl="right-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:hover">
-           <div class="menu-link">
-            <span class="menu-icon">
-             <i class="ki-filled ki-setting-2">
-             </i>
-            </span>
-            <span class="menu-title">
-             My Account
-            </span>
-            <span class="menu-arrow">
-             <i class="ki-filled ki-right text-3xs rtl:transform rtl:rotate-180">
-             </i>
-            </span>
-           </div>
-           <div class="menu-dropdown menu-default light:border-gray-300 w-full max-w-[220px]">
-            <div class="menu-item">
-             <a class="menu-link" href="html/demo2/account/home/get-started.html">
-              <span class="menu-icon">
-               <i class="ki-filled ki-coffee">
-               </i>
-              </span>
-              <span class="menu-title">
-               Get Started
-              </span>
-             </a>
-            </div>
-            <div class="menu-item">
-             <a class="menu-link" href="html/demo2/account/home/user-profile.html">
-              <span class="menu-icon">
-               <i class="ki-filled ki-some-files">
-               </i>
-              </span>
-              <span class="menu-title">
-               My Profile
-              </span>
-             </a>
-            </div>
 
-
-            <div class="menu-item">
-             <a class="menu-link" href="html/demo2/account/members/teams.html">
-              <span class="menu-icon">
-               <i class="ki-filled ki-setting">
-               </i>
-              </span>
-              <span class="menu-title">
-               Members & Roles
-              </span>
-             </a>
-            </div>
-            <div class="menu-item">
-             <a class="menu-link" href="html/demo2/account/integrations.html">
-              <span class="menu-icon">
-               <i class="ki-filled ki-switch">
-               </i>
-              </span>
-              <span class="menu-title">
-               Integrations
-              </span>
-             </a>
-            </div>
-            <div class="menu-separator">
-            </div>
-            <div class="menu-item">
-             <a class="menu-link" href="html/demo2/account/security/overview.html">
-              <span class="menu-icon">
-               <i class="ki-filled ki-shield-tick">
-               </i>
-              </span>
-              <span class="menu-title">
-               Notifications
-              </span>
-              <label class="switch switch-sm">
-               <input checked="" name="check" type="checkbox" value="1">
-               </input>
-              </label>
-             </a>
-            </div>
-           </div>
-          </div>
-          <div class="menu-item">
-           <a class="menu-link" href="https://devs.keenthemes.com">
-            <span class="menu-icon">
-             <i class="ki-filled ki-message-programming">
-             </i>
-            </span>
-            <span class="menu-title">
-             Dev Forum
-            </span>
-           </a>
-          </div>
           <div class="menu-item" data-menu-item-offset="-10px, 0" data-menu-item-placement="left-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:hover">
            <div class="menu-link">
             <span class="menu-icon">
@@ -254,9 +164,14 @@
            </div>
           </div>
           <div class="menu-item px-4 py-1.5">
-           <a class="btn btn-sm btn-light justify-center" href="html/demo2/authentication/classic/sign-in.html">
-            Log out
-           </a>
+           <a href="{{ route('logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+            class="btn btn-sm btn-light justify-center">
+                Log out
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                @csrf
+            </form>
           </div>
          </div>
         </div>
