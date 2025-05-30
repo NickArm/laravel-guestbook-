@@ -133,7 +133,17 @@
                     </div>
                     <div class="card-body grid gap-5">
                         @php
-                            $wifi = old('wifi', $property->wifi ?? []);
+                            $wifi = old('wifi');
+
+                            if (!$wifi && $property->wifi) {
+                                $wifi = [
+                                    'network' => $property->wifi->network,
+                                    'password' => $property->wifi->password,
+                                    'description' => $property->wifi->description,
+                                ];
+                            } elseif (!$wifi) {
+                                $wifi = [];
+                            }
                         @endphp
 
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
@@ -149,14 +159,10 @@
                         @php
                             $wifiDescription = old('wifi.description', $wifi['description'] ?? '');
                         @endphp
-                        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-                            <label class="form-label max-w-56">WiFi Description</label>
-                            <div class="grow">
-                                <input id="wifi_description" type="hidden" name="wifi[description]" value="{{ $wifiDescription }}">
-                                <trix-editor input="wifi_description"></trix-editor>
+                            <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                                <label class="form-label max-w-56">WiFi Description</label>
+                                <textarea class="input grow" name="wifi[description]" rows="3">{{ old('wifi.description', $wifi['description'] ?? '') }}</textarea>
                             </div>
-                        </div>
-
                     </div>
                 </div>
 
@@ -187,12 +193,10 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
-                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                    <textarea class="input" name="{{ $name }}" rows="3">{{ $value }}</textarea>
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
                 </div>
 
@@ -214,17 +218,15 @@
                         @endforeach
 
                         @php $name = 'location_description'; $label = 'Location Description'; @endphp
-                       @php
-                            $value = old($name, $property->$name ?? '');
-                        @endphp
-                        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-                            <label class="form-label max-w-56">{{ $label }}</label>
-                            <div class="grow">
-                                <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
-                                <trix-editor input="{{ $name }}"></trix-editor>
+                            @php
+                                $value = old($name, $property->$name ?? '');
+                            @endphp
+                            <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                                <label class="form-label max-w-56">{{ $label }}</label>
+                                <div class="grow">
+                                    <textarea class="input" name="{{ $name }}" rows="3">{{ $value }}</textarea>
+                                </div>
                             </div>
-                        </div>
-
                     </div>
                 </div>
 
