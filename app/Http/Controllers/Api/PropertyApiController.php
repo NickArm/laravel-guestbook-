@@ -10,6 +10,7 @@ class PropertyApiController extends Controller
     public function show($slug)
     {
         $property = Property::where('slug', $slug)->firstOrFail();
+        $user = $property->user;
 
         return response()->json([
             'property' => [
@@ -46,6 +47,41 @@ class PropertyApiController extends Controller
                     'title' => $t->title,
                     'description' => $t->description,
                 ]),
+            ],
+            'owner' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'photo' => $user->photo ?? '', // αν έχεις φώτο στο μέλλον
+                'message' => $user->bio ?? '',
+                'contacts' => collect($user->contact_me)->map(function ($contact) {
+                    $icons = [
+                        'instagram' => 'fa-brands fa-instagram',
+                        'email' => 'fa-solid fa-envelope',
+                        'phone' => 'fa-solid fa-phone',
+                        'whatsapp' => 'fa-brands fa-whatsapp',
+                        'viber' => 'fa-brands fa-viber',
+                        'website' => 'fa-solid fa-globe',
+                    ];
+
+                    $colors = [
+                        'whatsapp' => 'text-green-500',
+                        'viber' => 'text-purple-500',
+                    ];
+
+                    return [
+                        'type' => $contact['type'],
+                        'value' => $contact['value'],
+                        'icon' => $icons[$contact['type']] ?? 'fa-solid fa-circle',
+                        'url' => $contact['url'] ?? match ($contact['type']) {
+                            'whatsapp' => 'https://wa.me/'.preg_replace('/\D/', '', $contact['value']),
+                            'viber' => 'viber://chat?number='.preg_replace('/\D/', '', $contact['value']),
+                            'email' => 'mailto:'.$contact['value'],
+                            'website' => 'https://'.ltrim($contact['value'], 'https://'),
+                            default => null
+                        },
+                        'color' => $colors[$contact['type']] ?? null,
+                    ];
+                })->values(),
             ],
         ]);
     }
