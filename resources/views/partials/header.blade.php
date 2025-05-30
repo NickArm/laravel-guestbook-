@@ -25,7 +25,7 @@
          </button>
          <div class="menu-dropdown menu-default w-48">
           <div class="menu-item">
-           <a class="menu-link" href="html/demo2/public-profile/profiles/default.html" tabindex="0">
+           <a class="menu-link" href="#" tabindex="0">
             <span class="menu-icon">
              <i class="ki-filled ki-profile-circle">
              </i>
@@ -103,7 +103,7 @@
          </div>
          <div class="flex flex-col">
           <div class="menu-item">
-           <a class="menu-link" href="route('profile.edit')">
+           <a class="menu-link" href="{{ route('profile.edit') }}">
             <span class="menu-icon">
              <i class="ki-filled ki-profile-circle">
              </i>
