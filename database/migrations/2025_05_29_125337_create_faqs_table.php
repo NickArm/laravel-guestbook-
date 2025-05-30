@@ -9,16 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('wifis', function (Blueprint $table) {
+        Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->uuid('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
 
-            $table->string('network');
-            $table->string('password');
-            $table->text('description')->nullable();
+            $table->string('question');
+            $table->text('answer');
 
             $table->timestamps();
         });
