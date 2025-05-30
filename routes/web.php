@@ -45,9 +45,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-        Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password');
     });
-
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('password.update');
     // Properties
     Route::prefix('properties')->name('properties.')->group(function () {
         Route::get('/create', [PropertyController::class, 'create'])->name('create');
