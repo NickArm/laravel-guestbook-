@@ -9,7 +9,7 @@ class PropertyApiController extends Controller
 {
     public function show($slug)
     {
-        $property = Property::where('slug', $slug)->firstOrFail();
+        $property = Property::with(['rules', 'faqs', 'wifi', 'transportation', 'images'])->where('slug', $slug)->firstOrFail();
         $user = $property->user;
 
         return response()->json([
@@ -17,6 +17,8 @@ class PropertyApiController extends Controller
                 'id' => $property->id,
                 'slug' => $property->slug,
                 'name' => $property->name,
+                'logo_url' => $property->logo_url,
+                'gallery' => $property->images->pluck('url')->toArray(), // 👈 This is the gallery
                 'enabled_pages' => $property->enabled_pages,
                 'address' => $property->address,
                 'checkin' => $property->checkin,

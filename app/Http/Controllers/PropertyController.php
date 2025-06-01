@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Services\PropertyService;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,47 +19,25 @@ class PropertyController extends Controller
 
     public function create()
     {
-        $property = new Property;
-
-        return view('properties.create', compact('property'));
+        return view('properties.create', ['property' => new Property]);
     }
 
     public function edit(Property $property)
     {
         $this->authorize('update', $property);
-        $property->load(['rules', 'faqs', 'wifi', 'transportation']);
+        $property->load(['rules', 'faqs', 'wifi', 'transportation', 'images']);
 
         return view('properties.edit', compact('property'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|regex:/^[a-z0-9\-]+$/|unique:properties',
-            'address' => 'nullable|string|max:255',
-        ]);
+        $this->validateProperty($request);
 
-        $user = auth()->user();
+        $property = auth()->user()->properties()->create($this->buildPropertyData($request));
 
-        $property = $user->properties()->create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->slug ?? $request->name),
-            'address' => $request->address,
-            'enabled_pages' => $request->input('enabled_pages', []),
-            'is_active' => true,
-            'checkin' => $request->checkin,
-            'checkin_instructions' => $request->checkin_instructions,
-            'checkout' => $request->checkout,
-            'checkout_instructions' => $request->checkout_instructions,
-            'welcome_title' => $request->welcome_title,
-            'welcome_message' => $request->welcome_message,
-            'amenities_description' => $request->amenities_description,
-            'location_area' => $request->location_area,
-            'location_country' => $request->location_country,
-            'google_map_url' => $request->google_map_url,
-            'location_description' => $request->location_description,
-        ]);
+        $this->handleLogoUpload($request, $property);
+        $this->handleGalleryUpload($request, $property);
 
         $this->propertyService->syncExtras($property, $request);
 
@@ -68,33 +47,12 @@ class PropertyController extends Controller
     public function update(Request $request, Property $property)
     {
         $this->authorize('update', $property);
+        $this->validateProperty($request, $property->id);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|regex:/^[a-z0-9\-]+$/|unique:properties,slug,'.$property->id,
-            'address' => 'nullable|string|max:255',
-            'checkin' => 'nullable',
-            'checkin_instructions' => 'nullable',
-            'checkout' => 'nullable',
-            'checkout_instructions' => 'nullable',
-            'welcome_title' => 'nullable',
-            'welcome_message' => 'nullable',
-            'amenities_description' => 'nullable',
-            'location_area' => 'nullable',
-            'location_country' => 'nullable',
-            'google_map_url' => 'nullable|url',
-            'location_description' => 'nullable',
-            'wifi.network' => 'nullable|string|max:255',
-            'wifi.password' => 'nullable|string|max:255',
-            'wifi.description' => 'nullable|string',
-        ], [
-            'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
-        ]);
+        $property->update($this->buildPropertyData($request));
 
-        $property->update($validated);
-        $property->update([
-            'enabled_pages' => $request->input('enabled_pages', []),
-        ]);
+        $this->handleLogoUpload($request, $property);
+        $this->handleGalleryUpload($request, $property);
 
         $this->propertyService->syncExtras($property, $request);
 
@@ -115,5 +73,112 @@ class PropertyController extends Controller
         $property->update(['is_active' => ! $property->is_active]);
 
         return back()->with('success', 'Property status updated!');
+    }
+
+    public function deleteImage(Property $property, $imageId)
+    {
+        $this->authorize('update', $property);
+        $image = $property->images()->findOrFail($imageId);
+
+        if ($image->public_id) {
+            app(Cloudinary::class)->uploadApi()->destroy($image->public_id);
+        }
+
+        $image->delete();
+
+        return response()->json(['message' => 'Image deleted'], 200);
+    }
+
+    // -------------------------------
+    // Helpers
+    // -------------------------------
+
+    protected function validateProperty(Request $request, $id = null)
+    {
+        $rules = [
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|regex:/^[a-z0-9\-]+$/|unique:properties,slug,'.$id,
+            'address' => 'nullable|string|max:255',
+            'google_map_url' => 'nullable|url',
+            'wifi.network' => 'nullable|string|max:255',
+            'wifi.password' => 'nullable|string|max:255',
+            'wifi.description' => 'nullable|string',
+        ];
+
+        $request->validate($rules, [
+            'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
+        ]);
+    }
+
+    protected function buildPropertyData(Request $request)
+    {
+        return [
+            'name' => $request->name,
+            'slug' => Str::slug($request->slug ?? $request->name),
+            'address' => $request->address,
+            'enabled_pages' => $request->input('enabled_pages', []),
+            'is_active' => true,
+            'checkin' => $request->checkin,
+            'checkin_instructions' => $request->checkin_instructions,
+            'checkout' => $request->checkout,
+            'checkout_instructions' => $request->checkout_instructions,
+            'welcome_title' => $request->welcome_title,
+            'welcome_message' => $request->welcome_message,
+            'amenities_description' => $request->amenities_description,
+            'location_area' => $request->location_area,
+            'location_country' => $request->location_country,
+            'google_map_url' => $request->google_map_url,
+            'location_description' => $request->location_description,
+        ];
+    }
+
+    protected function handleLogoUpload(Request $request, Property $property)
+    {
+        if ($request->hasFile('logo')) {
+            $cloudinary = app(Cloudinary::class);
+
+            $upload = $cloudinary->uploadApi()->upload(
+                $request->file('logo')->getRealPath(),
+                [
+                    'folder' => 'properties/'.$property->slug,
+                    'public_id' => 'logo',
+                    'overwrite' => true,
+                ]
+            );
+
+            $property->update(['logo_url' => $upload['secure_url']]);
+        }
+    }
+
+    protected function handleGalleryUpload(Request $request, Property $property)
+    {
+        if (! $request->hasFile('gallery')) {
+            return;
+        }
+
+        $existingCount = $property->images()->count();
+        $newImages = $request->file('gallery');
+
+        if (($existingCount + count($newImages)) > 10) {
+            return back()->withErrors(['gallery' => 'You can upload up to 10 images in total.']);
+        }
+
+        $cloudinary = app(Cloudinary::class);
+
+        foreach ($newImages as $image) {
+            $upload = $cloudinary->uploadApi()->upload(
+                $image->getRealPath(),
+                [
+                    'folder' => 'properties/'.$property->slug.'/gallery',
+                    'use_filename' => true,
+                    'unique_filename' => false,
+                ]
+            );
+
+            $property->images()->create([
+                'url' => $upload['secure_url'],
+                'public_id' => $upload['public_id'],
+            ]);
+        }
     }
 }

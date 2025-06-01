@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $action }}">
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data">
     @csrf
     @if ($method === 'PUT')
         @method('PUT')
@@ -50,6 +50,12 @@
                             FAQs
                         </a>
 
+                        <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_gallery">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
+                            </span>
+                            Gallery
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -90,6 +96,15 @@
                         @endforeach
 
                     </div>
+
+                    <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                        <label class="form-label max-w-56">Logo</label>
+                         <input type="file" name="logo" id="logo" class="input" accept="image/*">
+                        @if (!empty($property->logo_url))
+                            <img src="{{ $property->logo_url }}" alt="Logo" class="h-16 mt-2 rounded border">
+                        @endif
+                    </div>
+
                 </div>
 
                 <!-- Amenities Section -->
@@ -306,6 +321,44 @@
                     </div>
                 </div>
 
+                <!-- Gallery Images -->
+                <div class="card pb-2.5" id="section_gallery">
+                    <div class="card-header">
+                        <h3 class="card-title">Gallery Photos</h3>
+                    </div>
+                    <div class="card-body grid gap-5">
+                        <!-- Upload Field -->
+                        <div class="flex flex-col gap-2">
+                            <label class="form-label">Gallery Images (max 10)</label>
+                            <input type="file" name="gallery[]" multiple accept="image/*" class="input" />
+                        </div>
+
+                        <!-- Existing Images -->
+                        @if ($property->images->count())
+                            <div class="flex flex-wrap gap-3 mt-4">
+
+                                @foreach ($property->images as $image)
+                                    <div class="relative group border rounded overflow-hidden w-28 h-28">
+                                                                            <button
+                                            data-image-id="{{ $image->id }}"
+                                            class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-red-700 delete-image-btn"
+                                            title="Delete Image"
+                                        >
+                                            &times;
+                                        </button>
+                                        <img src="{{ $image->url }}" alt="Gallery Image" class="w-full h-full object-cover" />
+
+
+                                    </div>
+
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+
+
 
                 <!-- Submit -->
                 <div class="flex justify-end pt-2.5">
@@ -391,5 +444,42 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+</script>
+@endpush
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-image-btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (!confirm('Are you sure you want to delete this image?')) return;
+
+                const imageId = this.dataset.imageId;
+                const propertyId = "{{ $property->id }}";
+                const buttonEl = this;
+
+                fetch(`/properties/${propertyId}/images/${imageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.status === 200 || response.status === 204) {
+                        buttonEl.closest('div.relative').remove();
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.message || 'Failed to delete image.');
+                        });
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message || 'An error occurred.');
+                });
+            });
+        });
+    });
 </script>
 @endpush

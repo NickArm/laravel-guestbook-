@@ -42,6 +42,16 @@ class ProfileController extends Controller
         $user->address = $request->input('address');
         $user->mobile_number = $request->input('mobile_number');
 
+        if ($request->hasFile('photo')) {
+            $upload = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' => 'users/'.$user->id,
+                'public_id' => 'profile',
+                'overwrite' => true,
+            ]);
+
+            $user->update(['photo' => $upload->getSecurePath()]);
+        }
+
         // Contacts ως JSON
         $user->contact_me = $request->input('contact_me', []);
 

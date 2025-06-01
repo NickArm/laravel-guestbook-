@@ -56,6 +56,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{property}', [PropertyController::class, 'destroy'])->name('destroy');
         Route::patch('/{property}/toggle', [PropertyController::class, 'toggleActive'])->name('toggle');
     });
+    Route::delete('/properties/{property}/images/{image}', [PropertyController::class, 'deleteImage'])
+        ->name('properties.image.delete');
+
 });
 
 /*

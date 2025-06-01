@@ -13,6 +13,8 @@ class Property extends Model
     protected $fillable = [
         'name',
         'slug',
+        'logo_url',
+        'gallery',
         'address',
         'enabled_pages',
         'is_active',
@@ -33,6 +35,7 @@ class Property extends Model
     protected $casts = [
         'enabled_pages' => 'array',
         'is_active' => 'boolean',
+        'gallery' => 'array',
     ];
 
     public function user()
@@ -58,5 +61,10 @@ class Property extends Model
     public function transportation()
     {
         return $this->hasMany(Transportation::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PropertyImage::class);
     }
 }
