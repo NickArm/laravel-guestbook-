@@ -84,6 +84,10 @@ class PropertyApiController extends Controller
                         ];
                     })->values(),
                 ],
+                'settings' => [
+                    'primary_color' => $property->settings->primary_color ?? '#000000',
+                    'secondary_color' => $property->settings->secondary_color ?? '#ffffff',
+                ],
             ],
         ]);
     }

@@ -36,6 +36,11 @@ class PropertyController extends Controller
 
         $property = auth()->user()->properties()->create($this->buildPropertyData($request));
 
+        $property->settings()->create([
+            'primary_color' => $request->input('settings.primary_color'),
+            'secondary_color' => $request->input('settings.secondary_color'),
+        ]);
+
         $this->handleLogoUpload($request, $property);
         $this->handleGalleryUpload($request, $property);
 
@@ -50,6 +55,11 @@ class PropertyController extends Controller
         $this->validateProperty($request, $property->id);
 
         $property->update($this->buildPropertyData($request));
+
+        $property->settings()->updateOrCreate([], [
+            'primary_color' => $request->input('settings.primary_color'),
+            'secondary_color' => $request->input('settings.secondary_color'),
+        ]);
 
         $this->handleLogoUpload($request, $property);
         $this->handleGalleryUpload($request, $property);
@@ -103,6 +113,9 @@ class PropertyController extends Controller
             'wifi.network' => 'nullable|string|max:255',
             'wifi.password' => 'nullable|string|max:255',
             'wifi.description' => 'nullable|string',
+            'settings.primary_color' => 'nullable|string|starts_with:#|size:7',
+            'settings.secondary_color' => 'nullable|string|starts_with:#|size:7',
+
         ];
 
         $request->validate($rules, [
