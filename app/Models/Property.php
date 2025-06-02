@@ -72,4 +72,9 @@ class Property extends Model
     {
         return $this->hasOne(Setting::class);
     }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
 }

@@ -84,6 +84,10 @@ class PropertyApiController extends Controller
                         ];
                     })->values(),
                 ],
+                'review' => $property->review ? [
+                    'description' => $property->review->description,
+                    'url' => $property->review->url,
+                ] : null,
                 'settings' => [
                     'primary_color' => $property->settings->primary_color ?? '#000000',
                     'secondary_color' => $property->settings->secondary_color ?? '#ffffff',

@@ -56,6 +56,12 @@
                             Gallery
                         </a>
 
+                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_review">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
+                            </span>
+                            Review
+                        </a>
+
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_settings">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
@@ -362,6 +368,34 @@
                         @endif
                     </div>
                 </div>
+
+                <!-- Review Section -->
+                <div class="card pb-2.5" id="section_review">
+                    <div class="card-header flex justify-between items-center">
+                        <h3 class="card-title">Review</h3>
+                        <label class="switch">
+                            <input type="checkbox" name="enabled_pages[]" value="review"
+                                {{ in_array('review', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
+                            <span class="switch-label">Enabled</span>
+                        </label>
+                    </div>
+                    <div class="card-body grid gap-5">
+                        @php
+                            $review = old('review', $property->review ?? []);
+                        @endphp
+
+                        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                            <label class="form-label max-w-56">Short Description</label>
+                            <input type="text" name="review[description]" class="input" value="{{ $review['description'] ?? '' }}">
+                        </div>
+
+                        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                            <label class="form-label max-w-56">Review URL</label>
+                            <input type="url" name="review[url]" class="input" value="{{ $review['url'] ?? '' }}">
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Settings Section -->
                 <div class="card pb-2.5" id="section_settings">

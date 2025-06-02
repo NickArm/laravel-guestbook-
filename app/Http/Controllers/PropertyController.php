@@ -41,6 +41,13 @@ class PropertyController extends Controller
             'secondary_color' => $request->input('settings.secondary_color'),
         ]);
 
+        if ($request->filled('review.description') || $request->filled('review.url')) {
+            $property->review()->updateOrCreate([], [
+                'description' => $request->input('review.description'),
+                'url' => $request->input('review.url'),
+            ]);
+        }
+
         $this->handleLogoUpload($request, $property);
         $this->handleGalleryUpload($request, $property);
 
@@ -60,6 +67,13 @@ class PropertyController extends Controller
             'primary_color' => $request->input('settings.primary_color'),
             'secondary_color' => $request->input('settings.secondary_color'),
         ]);
+
+        if ($request->filled('review.description') || $request->filled('review.url')) {
+            $property->review()->updateOrCreate([], [
+                'description' => $request->input('review.description'),
+                'url' => $request->input('review.url'),
+            ]);
+        }
 
         $this->handleLogoUpload($request, $property);
         $this->handleGalleryUpload($request, $property);
