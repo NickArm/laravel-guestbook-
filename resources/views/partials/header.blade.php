@@ -11,66 +11,6 @@
        <h3 class="text-gray-700 text-base hidden md:block">
         Welcomy
        </h3>
-       <span class="text-sm text-gray-400 font-medium px-2.5 hidden md:inline">
-        /
-       </span>
-       <div class="menu menu-default" data-menu="true">
-        <div class="menu-item" data-menu-item-offset="0, 10px" data-menu-item-placement="bottom-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="hover">
-         <button class="menu-toggle text-gray-900 font-medium">
-          Account
-          <span class="menu-arrow">
-           <i class="ki-filled ki-down">
-           </i>
-          </span>
-         </button>
-         <div class="menu-dropdown menu-default w-48">
-          <div class="menu-item">
-           <a class="menu-link" href="#" tabindex="0">
-            <span class="menu-icon">
-             <i class="ki-filled ki-profile-circle">
-             </i>
-            </span>
-            <span class="menu-title">
-             Public Profile
-            </span>
-           </a>
-          </div>
-          <div class="menu-item active">
-           <a class="menu-link" href="html/demo2.html" tabindex="0">
-            <span class="menu-icon">
-             <i class="ki-filled ki-setting-2">
-             </i>
-            </span>
-            <span class="menu-title">
-             Account
-            </span>
-           </a>
-          </div>
-          <div class="menu-item">
-           <a class="menu-link" href="html/demo2/network/get-started.html" tabindex="0">
-            <span class="menu-icon">
-             <i class="ki-filled ki-users">
-             </i>
-            </span>
-            <span class="menu-title">
-             Network
-            </span>
-           </a>
-          </div>
-          <div class="menu-item">
-           <a class="menu-link" href="html/demo2/authentication/get-started.html" tabindex="0">
-            <span class="menu-icon">
-             <i class="ki-filled ki-security-user">
-             </i>
-            </span>
-            <span class="menu-title">
-             Authentication
-            </span>
-           </a>
-          </div>
-         </div>
-        </div>
-       </div>
       </div>
      </div>
      <!-- End of Logo -->
@@ -81,13 +21,14 @@
       <div class="menu" data-menu="true">
        <div class="menu-item" data-menu-item-offset="20px, 10px" data-menu-item-offset-rtl="-20px, 10px" data-menu-item-placement="bottom-end" data-menu-item-placement-rtl="bottom-start" data-menu-item-toggle="dropdown" data-menu-item-trigger="click|lg:click">
         <div class="menu-toggle btn btn-icon rounded-full">
-         <img alt="" class="size-9 rounded-full justify-center border border-gray-500 shrink-0" src="assets/media/avatars/gray/5.png">
-         </img>
+        <img alt="Profile Photo" class="size-9 rounded-full justify-center border border-gray-500 shrink-0" src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/media/avatars/gray/5.png') }}">
         </div>
         <div class="menu-dropdown menu-default light:border-gray-300 w-screen max-w-[250px]">
          <div class="flex items-center justify-between px-5 py-1.5 gap-1.5">
           <div class="flex items-center gap-2">
-           <img alt="" class="size-9 rounded-full border-2 border-success" src="assets/media/avatars/300-2.png">
+            <img alt="Profile Photo" class="size-9 rounded-full justify-center border border-gray-500 shrink-0"
+                src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/media/avatars/gray/5.png') }}"
+            >
             <div class="flex flex-col gap-1.5">
              <span class="text-sm text-gray-800 font-semibold leading-none">
                 {{ auth()->user()->name }}
@@ -96,7 +37,6 @@
                 {{ auth()->user()->email }}
              </a>
             </div>
-           </img>
           </div>
          </div>
          <div class="menu-separator">

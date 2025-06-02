@@ -1,7 +1,19 @@
 
-    <form method="post" action="{{ route('profile.update') }}">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <!-- Profile Photo -->
+        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5 mb-5">
+            <label class="form-label max-w-56">Profile Photo</label>
+            <div class="grow">
+                <input type="file" name="photo" accept="image/*" class="input">
+                @if ($user->photo)
+                    <img src="{{ $user->photo }}" alt="Profile Photo" class="h-20 mt-2 rounded border">
+                @endif
+            </div>
+        </div>
+
 
         <!-- Name -->
         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5 mb-5">
@@ -33,7 +45,7 @@
             <input type="text" name="mobile_number" class="input" value="{{ old('mobile_number', $user->mobile_number) }}">
         </div>
 
-        <!-- Contact Me (JSON) -->
+        <!-- Contact Me -->
         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">Contact Methods</label>
             <div class="grow" id="contact-methods-container">

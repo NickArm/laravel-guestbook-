@@ -181,7 +181,7 @@
           </div>
          </div>
          <div class="card-footer justify-center">
-          <a class="btn btn-link" href="https://devs.keenthemes.com/unresolved">
+          <a class="btn btn-link" href="#">
            Contact Support
           </a>
          </div>

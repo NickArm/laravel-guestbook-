@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,9 +13,6 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -22,47 +20,60 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
-        // Standard validated fields
         $user->fill($request->validated());
 
-        // Αν το email άλλαξε, μηδενίζουμε την επιβεβαίωση
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Συμπληρωματικά πεδία (εκτός validated αν δεν μπήκαν στο request class)
+        // Optional fields
         $user->bio = $request->input('bio');
         $user->address = $request->input('address');
         $user->mobile_number = $request->input('mobile_number');
-
-        if ($request->hasFile('photo')) {
-            $upload = Cloudinary::upload($request->file('photo')->getRealPath(), [
-                'folder' => 'users/'.$user->id,
-                'public_id' => 'profile',
-                'overwrite' => true,
-            ]);
-
-            $user->update(['photo' => $upload->getSecurePath()]);
-        }
-
-        // Contacts ως JSON
         $user->contact_me = $request->input('contact_me', []);
+
+        // Photo Upload
+        if ($request->hasFile('photo')) {
+
+            $cloudinary = app(Cloudinary::class);
+            try {
+                $upload = $cloudinary->uploadApi()->upload(
+                    $request->file('photo')->getRealPath(),
+                    [
+                        'folder' => 'users/'.$user->id,
+                        'public_id' => 'profile',
+                        'overwrite' => true,
+                    ]
+                );
+
+                $user->photo = $upload['secure_url'];
+            } catch (\Exception $e) {
+                return back()->withErrors(['photo' => 'Failed to upload profile photo.']);
+            }
+        }
 
         $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('status', 'password-updated');
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -79,19 +90,5 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
-    }
-
-    public function updatePassword(Request $request)
-    {
-        $request->validate([
-            'current_password' => ['required', 'current_password'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
-        $request->user()->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        return back()->with('status', 'password-updated');
     }
 }
