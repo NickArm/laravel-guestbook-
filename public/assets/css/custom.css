@@ -1,3 +1,10 @@
 header .logo{
     max-width: 40px;
 }
+
+
+.remove-transportation, .remove-faq,.remove-rule{
+  background: #910000;
+  width: 25px;
+  color: white;
+}

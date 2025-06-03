@@ -82,7 +82,7 @@
                     @foreach ($properties as $property)
                         <tr>
                             <td class="text-gray-800 font-medium">{{ $property->name }}</td>
-                            <td class="text-gray-800">{{ $property->slug }}</td>
+                            <td class="text-gray-800">{{ $property->slug }} <br>(<span class="text-xs">Property's Url: <a target="_blank" href="https://{{ $property->slug }}.welcomy.net">{{ $property->slug }}.welcomy.net</a></span>) </td>
                             <td class="text-gray-800">{{ $property->checkin }}</td>
                             <td class="text-gray-800">{{ $property->checkout }}</td>
                             <td class="text-center">

@@ -113,7 +113,7 @@
                         <label class="form-label max-w-56">Logo</label>
                          <input type="file" name="logo" id="logo" class="input" accept="image/*">
                         @if (!empty($property->logo_url))
-                            <img src="{{ $property->logo_url }}" alt="Logo" class="h-16 mt-2 rounded border">
+                            <img src="{{ $property->logo_url }}" alt="Logo" class="w-28 mt-2 rounded border">
                         @endif
                     </div>
 
@@ -270,8 +270,8 @@
                     <div class="card-body grid gap-5">
                         <div id="transportation-container" class="grid gap-4">
                             @foreach(old('transportation', $property->transportation->toArray() ?? []) as $index => $t)
-                                <div class="transportation-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
-                                    <button type="button" class="absolute top-2 right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
+                                <div class="transportation-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
+                                    <button type="button" class="absolute rounded-md right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
                                     <input type="text" name="transportation[{{ $index }}][title]" class="input" placeholder="Title" value="{{ $t['title'] ?? '' }}">
                                     <input type="text" name="transportation[{{ $index }}][description]" class="input" placeholder="Description" value="{{ $t['description'] ?? '' }}">
                                 </div>
@@ -295,8 +295,8 @@
                     <div class="card-body grid gap-5">
                         <div id="rules-container" class="grid gap-4">
                             @foreach(old('rules', $property->rules->toArray() ?? []) as $index => $rule)
-                                <div class="rule-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
-                                    <button type="button" class="absolute top-2 right-2 text-red-600 remove-rule" title="Remove">&times;</button>
+                                <div class="rule-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
+                                    <button type="button" class="absolute rounded-md right-2 text-red-600 remove-rule" title="Remove">&times;</button>
                                     <input type="text" name="rules[{{ $index }}][title]" placeholder="Title" class="input" value="{{ $rule['title'] ?? '' }}">
                                     <input type="text" name="rules[{{ $index }}][description]" placeholder="Description" class="input" value="{{ $rule['description'] ?? '' }}">
                                 </div>
@@ -320,8 +320,8 @@
                     <div class="card-body grid gap-5">
                         <div id="faqs-container" class="grid gap-4">
                             @foreach(old('faqs', $property->faqs->toArray() ?? []) as $index => $faq)
-                                <div class="faq-group grid gap-2 p-4 border rounded-md bg-gray-50 relative">
-                                    <button type="button" class="absolute top-2 right-2 text-red-600 remove-faq" title="Remove">&times;</button>
+                                <div class="faq-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
+                                    <button type="button" class="absolute rounded-md right-2 text-red-600 remove-faq" title="Remove">&times;</button>
                                     <input type="text" name="faqs[{{ $index }}][question]" class="input" placeholder="Question"
                                         value="{{ $faq['question'] ?? '' }}">
                                     <input type="text" name="faqs[{{ $index }}][answer]" class="input" placeholder="Answer"
@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const wrapper = document.createElement('div');
         wrapper.className = 'rule-group grid gap-2 p-4 border rounded-md bg-gray-50 relative';
         wrapper.innerHTML = `
-            <button type="button" class="absolute top-2 right-2 text-red-600 remove-rule" title="Remove">&times;</button>
+            <button type="button" class="absolute  right-2 text-red-600 rounded-m remove-rule" title="Remove">&times;</button>
             <input type="text" name="rules[${index}][title]" placeholder="Title" class="input" />
             <textarea name="rules[${index}][description]" placeholder="Description" rows="2" class="input"></textarea>
         `;
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const wrapper = document.createElement('div');
         wrapper.className = 'faq-group grid gap-2 p-4 border rounded-md bg-gray-50 relative';
         wrapper.innerHTML = `
-            <button type="button" class="absolute top-2 right-2 text-red-600 remove-faq" title="Remove">&times;</button>
+            <button type="button" class="absolute  right-2 text-red-600 rounded-m remove-faq" title="Remove">&times;</button>
             <input type="text" name="faqs[${faqIndex}][question]" class="input" placeholder="Question" />
             <textarea name="faqs[${faqIndex}][answer]" class="input" placeholder="Answer" rows="2"></textarea>
         `;
@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const wrapper = document.createElement('div');
         wrapper.className = 'transportation-group grid gap-2 p-4 border rounded-md bg-gray-50 relative';
         wrapper.innerHTML = `
-            <button type="button" class="absolute top-2 right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
+            <button type="absolute  right-2 text-red-600 rounded-m remove-transportation" title="Remove">&times;</button>
             <input type="text" name="transportation[${tIndex}][title]" class="input" placeholder="Title" />
             <textarea name="transportation[${tIndex}][description]" class="input" placeholder="Description" rows="2"></textarea>
         `;

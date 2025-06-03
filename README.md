@@ -1,115 +1,131 @@
-# Guesthouse App (Laravel + React)
+# 🏠 Guesthouse App (Laravel + React)
 
-Welcome to the **Guesthouse App**, a modern Laravel-based admin panel paired with a React-powered frontend.
-This platform empowers property owners to create and manage digital guestbooks with rich content and customized appearance.
+Welcome to the **Guesthouse App**, a modern, modular platform for managing digital guestbooks for apartments, villas, and other short-term rentals. This app empowers property owners with full control over the guest experience—from check-in details and WiFi info to reviews and rules.
 
 ---
 
 ## ✨ Features
 
-### 🛠 Admin Panel (Laravel)
-- Authenticated dashboard for each property owner
-- Dynamic section toggling via `enabled_pages`
-- Full CRUD support for:
-  - Rules (title, description)
-  - FAQs (question, answer)
+### 🔒 Admin Panel (Laravel)
+- User registration & authentication
+- Owner profile with photo, bio, mobile number, contact links (WhatsApp, Viber, etc.)
+- Dashboard for creating and editing properties
+- Dynamic content sections using `enabled_pages[]`:
+  - Welcome
+  - Check-in / Check-out
   - WiFi (network, password, description)
-  - Transportation (title, description)
-  - Image Gallery (up to 10 images per property)
-  - Property Logo (via Cloudinary)
-  - Owner Profile & Contact Info
-- Settings per property:
-  - Primary Color
-  - Secondary Color
+  - Amenities
+  - Location (area, country, description, map)
+  - Rules (dynamic list)
+  - FAQs (dynamic list)
+  - Transportation Info (Bus, Taxi, etc.)
+  - Gallery Upload (up to 10 photos via Cloudinary)
+  - Logo Upload (via Cloudinary)
+  - Review Section (short description + external URL)
+  - Settings (Primary/Secondary colors)
 
-### 📱 Frontend (React)
-- Dynamic display of sections based on API data
-- Slug-based access (e.g. `https://app.welcomy.net/api/property/my-house`)
-- Modern and responsive design
-- Easy-to-integrate JSON-based content loading
+### 🌐 API (Laravel)
+- JSON endpoint per property via slug:
+  ```
+  GET /api/property/{slug}
+  ```
+- Returns all enabled sections and values including:
+  - Gallery image URLs
+  - Logo URL
+  - Owner info (name, photo, contacts)
+  - Color settings
 
----
-
-## 🔌 Cloudinary Integration
-- Optimized image storage (logo, gallery)
-- Image deletion supported from UI + Cloudinary
-- All uploads organized under folders per property:
-  - `properties/{slug}/logo`
-  - `properties/{slug}/gallery`
+### 📱 Frontend App (React)
+- Dynamic mobile-ready UI
+- Sections shown based on `enabled_pages`
+- Tabs, Icons, Branding based on API
+- Support for social media/contact actions
 
 ---
 
 ## ⚙️ Installation
 
+### 1. Clone the repository
 ```bash
 git clone https://github.com/your-user/guesthouse-app.git
 cd guesthouse-app
+```
+
+### 2. Install backend dependencies
+```bash
 composer install
+```
+
+### 3. Install frontend (optional)
+```bash
 npm install && npm run dev
+```
+
+### 4. Configure environment
+```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
----
-
-## 🗃 Database Setup
-
-```bash
-php artisan migrate
-php artisan db:seed # Optional for demo data
+### 5. Add Cloudinary credentials to `.env`
+```
+CLOUDINARY_CLOUD_NAME=your_cloud
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
 ```
 
----
+### 6. Run migrations
+```bash
+php artisan migrate
+```
 
-## ▶️ Run the App
+### 7. (Optional) Seed data
+```bash
+php artisan db:seed
+```
 
+### 8. Serve the app
 ```bash
 php artisan serve
 ```
 
 ---
 
-## 🔗 API
-
-**Property JSON Endpoint**
-
-```
-GET /api/property/{slug}
-```
-
-Returns:
+## 🔗 Example API Response
 ```json
 {
   "property": {
-    "name": "Lia's Apartment",
     "slug": "lias-apartment",
-    "logo_url": "...",
-    "gallery": ["...", "..."],
-    "enabled_pages": ["wifi", "faq", "rules"],
-    "checkin": "...",
+    "logo_url": "https://res.cloudinary.com/.../logo.png",
+    "gallery": ["https://res.cloudinary.com/.../1.jpg"],
+    "enabled_pages": ["welcome", "wifi", "review", "faq", "rules"],
     "wifi": {
-      "network": "...",
-      "password": "...",
-      "description": "..."
+      "network": "Lia-Wifi",
+      "password": "12345678",
+      "description": "Available in all rooms"
     },
-    "settings": {
-      "primary_color": "#000000",
-      "secondary_color": "#ffffff"
+    "review": {
+      "description": "If you enjoyed your stay, please leave a review!",
+      "url": "https://airbnb.com/review/xyz"
     },
-    "owner": {
-      "name": "...",
-      "photo": "...",
-      "contacts": [...]
-    }
+    ...
+  },
+  "owner": {
+    "name": "Nick Armenis",
+    "photo": "https://res.cloudinary.com/.../profile.jpg",
+    "contacts": [
+      { "type": "email", "value": "armenisnick@gmail.com", "icon": "...", "url": "mailto:armenisnick@gmail.com" }
+    ]
   }
 }
 ```
 
 ---
 
-## 👨‍💻 Developer Info
-
+## 🧑‍💻 Developer Info
 **Nick Armenis**  
 📧 armenisnick@gmail.com
 
-Made with ❤️ for digital guest experience.
+---
+
+Made with ❤️ for property owners who care about their guests.
