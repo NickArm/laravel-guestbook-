@@ -2,9 +2,19 @@
 
 @section('content')
 <div class="container mx-auto py-12">
+
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Manage Users</h1>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-primary">+ Create User</a>
+        <div class="flex items-center space-x-3">
+            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">+ Create User</a>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="btn btn-light text-sm">
+                    Logout
+                </button>
+            </form>
+        </div>
     </div>
 
     @if (session('success'))
@@ -16,7 +26,7 @@
     @if ($users->isEmpty())
         <p>No users found.</p>
     @else
-        <div class="overflow-x-auto rounded shadow border border-gray-200">
+        <div class="mt-4 overflow-x-auto rounded shadow border border-gray-200">
             <table class="min-w-full bg-white text-sm">
                 <thead class="bg-gray-100 text-left font-semibold">
                     <tr>
