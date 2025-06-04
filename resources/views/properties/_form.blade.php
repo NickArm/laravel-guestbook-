@@ -88,7 +88,7 @@
                         ] as [$name, $label])
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}">
+                                <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}" required>
                             </div>
                         @endforeach
 
@@ -101,11 +101,15 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
+                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}" required>
                                     <trix-editor input="{{ $name }}"></trix-editor>
+                                    @error($name)
+                                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
                         @endforeach
+
 
                     </div>
 
@@ -162,7 +166,7 @@
                         @php
                             $wifi = old('wifi');
 
-                            if (!$wifi && $property->wifi) {
+                            if (!$wifi && isset($property) && $property->wifi) {
                                 $wifi = [
                                     'network' => $property->wifi->network,
                                     'password' => $property->wifi->password,
@@ -172,6 +176,7 @@
                                 $wifi = [];
                             }
                         @endphp
+
 
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label max-w-56">WiFi Network</label>
@@ -206,7 +211,7 @@
                         ] as [$name, $label])
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}">
+                                <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}" required>
                             </div>
                         @endforeach
 
@@ -220,7 +225,7 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <textarea class="input" name="{{ $name }}" rows="3">{{ $value }}</textarea>
+                                    <textarea class="input" name="{{ $name }}" rows="3" required>{{ $value }}</textarea>
                                 </div>
                             </div>
                         @endforeach
@@ -240,7 +245,16 @@
                         ] as [$name, $label])
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
-                                <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}">
+                                <input
+                                    class="input @error($name) border-red-500 @enderror"
+                                    type="text"
+                                    name="{{ $name }}"
+                                    value="{{ old($name, $property->$name ?? '') }}"
+                                    {{ $name !== 'google_map_url' ? 'required' : '' }}
+                                >
+                                @error($name)
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                         @endforeach
 
@@ -251,7 +265,7 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <textarea class="input" name="{{ $name }}" rows="3">{{ $value }}</textarea>
+                                    <textarea class="input" name="{{ $name }}" rows="3" required>{{ $value }}</textarea>
                                 </div>
                             </div>
                     </div>
@@ -269,7 +283,11 @@
                     </div>
                     <div class="card-body grid gap-5">
                         <div id="transportation-container" class="grid gap-4">
-                            @foreach(old('transportation', $property->transportation->toArray() ?? []) as $index => $t)
+                            @php
+                                $transportationItems = old('transportation', isset($property) && $property->transportation ? $property->transportation->toArray() : []);
+                            @endphp
+
+                            @foreach($transportationItems as $index => $t)
                                 <div class="transportation-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
                                     <button type="button" class="absolute rounded-md right-2 text-red-600 remove-transportation" title="Remove">&times;</button>
                                     <input type="text" name="transportation[{{ $index }}][title]" class="input" placeholder="Title" value="{{ $t['title'] ?? '' }}">
@@ -294,7 +312,12 @@
                     </div>
                     <div class="card-body grid gap-5">
                         <div id="rules-container" class="grid gap-4">
-                            @foreach(old('rules', $property->rules->toArray() ?? []) as $index => $rule)
+                            @php
+                                $rulesItems = old('rules', isset($property) && $property->rules ? $property->rules->toArray() : []);
+                            @endphp
+
+                            @foreach($rulesItems as $index => $rule)
+
                                 <div class="rule-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
                                     <button type="button" class="absolute rounded-md right-2 text-red-600 remove-rule" title="Remove">&times;</button>
                                     <input type="text" name="rules[{{ $index }}][title]" placeholder="Title" class="input" value="{{ $rule['title'] ?? '' }}">
@@ -319,7 +342,12 @@
                     </div>
                     <div class="card-body grid gap-5">
                         <div id="faqs-container" class="grid gap-4">
-                            @foreach(old('faqs', $property->faqs->toArray() ?? []) as $index => $faq)
+                            @php
+                                $faqItems = old('faqs', isset($property) && $property->faqs ? $property->faqs->toArray() : []);
+                            @endphp
+
+                            @foreach($faqItems as $index => $faq)
+
                                 <div class="faq-group grid gap-2 pl-8 p-4 border rounded-md bg-gray-50 relative">
                                     <button type="button" class="absolute rounded-md right-2 text-red-600 remove-faq" title="Remove">&times;</button>
                                     <input type="text" name="faqs[{{ $index }}][question]" class="input" placeholder="Question"
@@ -346,7 +374,11 @@
                         </div>
 
                         <!-- Existing Images -->
-                        @if ($property->images->count())
+                        @php
+                            $images = isset($property) && $property->images ? $property->images : collect();
+                        @endphp
+
+                        @if ($images->count())
                             <div class="flex flex-wrap gap-3 mt-4">
 
                                 @foreach ($property->images as $image)
@@ -503,6 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+@isset($property)
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -540,3 +573,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 </script>
 @endpush
+@endisset

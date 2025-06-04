@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
@@ -67,14 +68,24 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth', 'is_superadmin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'is_superadmin'])
+    ->prefix('admin')
+    ->name('admin.users.')
+    ->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('create');
+        Route::post('/users', [UserController::class, 'store'])->name('store');
+        Route::patch('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('toggle');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
-
-    Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::post('/', [UserController::class, 'store'])->name('store');
     });
-});
+
+/*
+|--------------------------------------------------------------------------
+| Pages Routes
+|--------------------------------------------------------------------------
+*/
+Route::view('/faqs', 'pages.faqs')->name('pages.faqs');
+Route::view('/contact', 'pages.contact')->name('pages.contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');

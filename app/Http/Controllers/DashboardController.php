@@ -6,8 +6,13 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $properties = auth()->user()->properties;
+        $user = auth()->user();
+        $properties = $user->properties;
 
-        return view('dashboard', compact('properties'));
+        return view('dashboard', [
+            'properties' => $user->properties,
+            'propertyLimit' => $user->property_limit,
+            'currentCount' => $user->properties()->count(),
+        ]);
     }
 }

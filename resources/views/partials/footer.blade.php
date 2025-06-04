@@ -7,7 +7,7 @@
          2025©
         </span>
         <a class="text-gray-600 hover:text-primary" href="https://app.welcomy.net/">
-         Aapp.welcomy.net
+         App.welcomy.net
         </a>
        </div>
        <nav class="flex order-1 md:order-2 gap-4 font-normal text-2sm text-gray-600">
@@ -17,7 +17,7 @@
         <a class="hover:text-primary" href="https://github.com/NickArm/laravel-guestbook-">
          GitHub
         </a>
-        <a class="hover:text-primary" href="#">
+        <a class="hover:text-primary" target="_blank" href="https://armenisnick.com">
          Contact
         </a>
        </nav>

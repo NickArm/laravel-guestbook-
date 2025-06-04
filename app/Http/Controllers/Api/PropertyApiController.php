@@ -12,6 +12,10 @@ class PropertyApiController extends Controller
         $property = Property::with(['rules', 'faqs', 'wifi', 'transportation', 'images'])->where('slug', $slug)->firstOrFail();
         $user = $property->user;
 
+        if (! $user->is_active) {
+            return response()->json(['message' => 'Owner account is deactivated.'], 403);
+        }
+
         return response()->json([
             'property' => [
                 'id' => $property->id,

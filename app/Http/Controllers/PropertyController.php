@@ -32,6 +32,12 @@ class PropertyController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+
+        if ($user->properties()->count() >= $user->property_limit) {
+            return back()->with('error', 'You have reached your property creation limit.');
+        }
+
         $this->validateProperty($request);
 
         $property = auth()->user()->properties()->create($this->buildPropertyData($request));
@@ -122,13 +128,20 @@ class PropertyController extends Controller
         $rules = [
             'name' => 'required|string|max:255',
             'slug' => 'required|string|regex:/^[a-z0-9\-]+$/|unique:properties,slug,'.$id,
-            'address' => 'nullable|string|max:255',
+            'address' => 'required|string|max:255',
+            'welcome_title' => 'required|string|max:255',
+            'welcome_message' => 'required|string',
+            'checkin' => 'required|string',
+            'checkout' => 'required|string',
+            'checkin_instructions' => 'required|string',
+            'checkout_instructions' => 'required|string',
+            'location_area' => 'required|string|max:255',
+            'location_country' => 'required|string|max:255',
+            'location_description' => 'required|string',
             'google_map_url' => 'nullable|url',
             'wifi.network' => 'nullable|string|max:255',
             'wifi.password' => 'nullable|string|max:255',
             'wifi.description' => 'nullable|string',
-            'settings.primary_color' => 'nullable|string|starts_with:#|size:7',
-            'settings.secondary_color' => 'nullable|string|starts_with:#|size:7',
 
         ];
 

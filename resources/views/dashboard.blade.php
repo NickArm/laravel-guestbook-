@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Sign in')
+@section('title', 'Dashboard - Welcomy')
 @section('meta_description', 'Login to access your dashboard')
 
 @section('content')
@@ -33,13 +33,21 @@
         </h1>
        </div>
        <div class="flex items-center gap-2.5">
-        <a disabled class="btn btn-sm btn-light" href="#">
-         Check API Reponse
-        </a>
-        <a class="btn btn-sm btn-primary" href="{{ route('properties.create') }}">
-         Add Property
-        </a>
-       </div>
+            <a disabled class="btn btn-sm btn-light" href="#">
+                Check API Response
+            </a>
+
+            @if ($currentCount < $propertyLimit)
+                <a class="btn btn-sm btn-primary" href="{{ route('properties.create') }}">
+                    Add Property
+                </a>
+            @else
+                <button type="button" class="btn btn-sm btn-primary opacity-50 cursor-not-allowed"
+                        onclick="alert('You have reached your property limit ({{ $propertyLimit }}). Please contact support to upgrade.')">
+                    Add Property
+                </button>
+            @endif
+        </div>
       </div>
      </div>
      <!-- End of Container -->
@@ -106,7 +114,8 @@
                                             </div>
                                             <div class="menu-separator"></div>
                                             <div class="menu-item">
-                                                <form method="POST" action="{{ route('properties.destroy', $property) }}">
+                                                <form method="POST" action="{{ route('properties.destroy', $property) }}"
+                                                    onsubmit="return confirm('Are you sure you want to delete this property?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="menu-link w-full text-left">
@@ -160,7 +169,7 @@
           </div>
          </div>
          <div class="card-footer justify-center">
-          <a class="btn btn-link" href="">
+          <a class="btn btn-link" href="{{ route('pages.faqs') }}">
            Go to Help Center
           </a>
          </div>
@@ -181,7 +190,7 @@
           </div>
          </div>
          <div class="card-footer justify-center">
-          <a class="btn btn-link" href="#">
+          <a class="btn btn-link" href="{{ route('pages.contact') }}">
            Contact Support
           </a>
          </div>

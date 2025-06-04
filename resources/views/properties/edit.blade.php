@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Sign in')
+@section('title', 'Edit Property - Welcomy')
 @section('meta_description', 'Login to access your dashboard')
 
 @section('content')

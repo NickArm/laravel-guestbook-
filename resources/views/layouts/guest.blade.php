@@ -6,21 +6,21 @@
     <meta name="description" content="@yield('meta_description', 'Sign in page using Tailwind CSS')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Metronic - Tailwind CSS Sign In')</title>
+    <title>@yield('title', 'Welcomy')</title>
 
     <!-- Open Graph / Twitter -->
     <meta name="robots" content="follow, index">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@keenthemes">
     <meta name="twitter:creator" content="@keenthemes">
-    <meta name="twitter:title" content="@yield('title', 'Metronic - Tailwind CSS Sign In')">
+    <meta name="twitter:title" content="@yield('title', 'Welcomy')">
     <meta name="twitter:description" content="@yield('meta_description')">
     <meta name="twitter:image" content="{{ asset('assets/media/app/og-image.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Metronic">
-    <meta property="og:title" content="@yield('title', 'Metronic - Tailwind CSS Sign In')">
+    <meta property="og:title" content="@yield('title', 'Welcomy')">
     <meta property="og:description" content="@yield('meta_description')">
     <meta property="og:image" content="{{ asset('assets/media/app/og-image.png') }}">
 
