@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Actions\UploadGalleryImagesAction;
+use App\Actions\UploadLogoAction;
 use App\Models\Property;
 use App\Models\User;
 use Cloudinary\Cloudinary;
@@ -10,6 +12,11 @@ use Illuminate\Support\Str;
 
 class PropertyService
 {
+    public function __construct(
+        protected UploadLogoAction $uploadLogoAction,
+        protected UploadGalleryImagesAction $uploadGalleryImagesAction
+    ) {}
+
     public function createFullProperty(User $user, Request $request): Property
     {
         $this->validateProperty($request);
@@ -18,8 +25,13 @@ class PropertyService
 
         $this->handleSettings($property, $request);
         $this->handleReview($property, $request);
-        $this->handleLogoUpload($property, $request);
-        $this->handleGalleryUpload($property, $request);
+        if ($request->hasFile('logo')) {
+            $this->uploadLogoAction->execute($request->file('logo'), $property);
+        }
+
+        if ($request->hasFile('gallery')) {
+            $this->uploadGalleryImagesAction->execute($property, $request->file('gallery'));
+        }
         $this->syncExtras($property, $request);
 
         return $property;
@@ -33,20 +45,13 @@ class PropertyService
 
         $this->handleSettings($property, $request);
         $this->handleReview($property, $request);
-        $this->handleLogoUpload($property, $request);
-        $this->handleGalleryUpload($property, $request);
-        $this->syncExtras($property, $request);
-    }
-
-    public function deleteGalleryImage(Property $property, $imageId): void
-    {
-        $image = $property->images()->findOrFail($imageId);
-
-        if ($image->public_id) {
-            app(Cloudinary::class)->uploadApi()->destroy($image->public_id);
+        if ($request->hasFile('logo')) {
+            $this->uploadLogoAction->execute($request->file('logo'), $property);
         }
-
-        $image->delete();
+        if ($request->hasFile('gallery')) {
+            $this->uploadGalleryImagesAction->execute($property, $request->file('gallery'));
+        }
+        $this->syncExtras($property, $request);
     }
 
     protected function validateProperty(Request $request, $id = null): void
@@ -110,54 +115,6 @@ class PropertyService
         }
     }
 
-    protected function handleLogoUpload(Property $property, Request $request): void
-    {
-        if (! $request->hasFile('logo')) {
-            return;
-        }
-
-        $upload = app(Cloudinary::class)->uploadApi()->upload(
-            $request->file('logo')->getRealPath(),
-            [
-                'folder' => 'properties/'.$property->slug,
-                'public_id' => 'logo',
-                'overwrite' => true,
-            ]
-        );
-
-        $property->update(['logo_url' => $upload['secure_url']]);
-    }
-
-    protected function handleGalleryUpload(Property $property, Request $request): void
-    {
-        if (! $request->hasFile('gallery')) {
-            return;
-        }
-
-        $existingCount = $property->images()->count();
-        $newImages = $request->file('gallery');
-
-        if (($existingCount + count($newImages)) > 10) {
-            abort(422, 'You can upload up to 10 images in total.');
-        }
-
-        foreach ($newImages as $image) {
-            $upload = app(Cloudinary::class)->uploadApi()->upload(
-                $image->getRealPath(),
-                [
-                    'folder' => 'properties/'.$property->slug.'/gallery',
-                    'use_filename' => true,
-                    'unique_filename' => false,
-                ]
-            );
-
-            $property->images()->create([
-                'url' => $upload['secure_url'],
-                'public_id' => $upload['public_id'],
-            ]);
-        }
-    }
-
     public function syncExtras(Property $property, Request $request): void
     {
         $property->rules()->delete();
@@ -179,5 +136,16 @@ class PropertyService
         foreach ($request->input('transportation', []) as $item) {
             $property->transportation()->create($item);
         }
+    }
+
+    public function deleteGalleryImage(Property $property, string $imageId): void
+    {
+        $image = $property->images()->findOrFail($imageId);
+
+        if ($image->public_id) {
+            app(Cloudinary::class)->uploadApi()->destroy($image->public_id);
+        }
+
+        $image->delete();
     }
 }
