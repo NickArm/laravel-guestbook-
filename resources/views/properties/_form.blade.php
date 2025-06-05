@@ -438,8 +438,8 @@
                     <div class="card-header flex justify-between items-center">
                         <h3 class="card-title">Before You Go</h3>
                         <label class="switch">
-                            <input type="checkbox" name="enabled_pages[]" value="before_you_go"
-                                {{ in_array('before_you_go', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
+                            <input type="checkbox" name="enabled_pages[]" value="before-you-go"
+                                {{ in_array('before-you-go', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
                             <span class="switch-label">Enabled</span>
                         </label>
                     </div>
