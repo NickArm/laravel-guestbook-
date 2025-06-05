@@ -1,103 +1,97 @@
-
 # Welcomy Guesthouse Management System
 
-Το **Welcomy** είναι μια Laravel εφαρμογή διαχείρισης ψηφιακών βιβλίων επισκεπτών για ιδιοκτήτες καταλυμάτων. Κάθε χρήστης μπορεί να δημιουργήσει properties (ιδιοκτησίες) και να διαχειριστεί custom περιεχόμενο για τους επισκέπτες του.
+This Laravel + Tailwind + Alpine.js based web app allows guesthouse owners and superadmins to manage properties, users, and content in a user-friendly dashboard.
 
 ---
 
-## 🔧 Features
+## Features
 
-- User authentication (Login, Logout, Email verification)
-- Διαφορετικά roles: `superadmin`, `user`
-- Property management με:
-  - Check-in/out πληροφορίες
-  - Welcome messages, WiFi, location, amenities
-  - Δυνατότητα Gallery εικόνων και review URLs
-- Dashboard ανά χρήστη
-- Πλήρες CRUD για properties
-- Property limit ανά χρήστη
-- Soft toggling ενεργών/ανενεργών χρηστών
-- Ασφαλές API με ενεργούς χρήστες μόνο
-- Contact form & FAQs page (static)
-- Admin panel για διαχείριση χρηστών
+### ✅ User Roles
+- Superadmin:
+  - Manage users (create, edit, deactivate)
+  - See all properties
+- User:
+  - Manage only their own properties
 
----
+### 🏡 Property Management
+- CRUD operations for properties
+- Supports multiple optional sections:
+  - Rules
+  - FAQs
+  - Amenities
+  - Transportation
+  - Review
+  - WiFi settings
+- Image upload via Cloudinary:
+  - Logo (1 image)
+  - Gallery (up to 10 images)
 
-## 🧪 Tech Stack
+### ⚙️ Settings
+- Customize each property's primary/secondary colors
+- Enable/disable content sections via checkboxes
 
-- Laravel 10.x
-- PHP 8.1
-- Tailwind CSS
-- Cloudinary (για διαχείριση εικόνων)
-- Spatie Laravel-Permission (Roles & Permissions)
+### 📍 Location Support
+- Stores location description, area, country, and Google Map URL
 
----
-
-## 🗂 Directory Overview
-
-- `/app/Http/Controllers` — Χειριστές για user & property ροές
-- `/resources/views` — Blade views (admin/user/frontend)
-- `/routes/web.php` — Όλες οι routes της εφαρμογής
-- `/database/seeders` — UserSeeder, RoleSeeder, DemoDataSeeder
+### 🔐 Authentication & Access Control
+- Laravel Breeze-based auth (email & password)
+- Role-based route protection via middleware
 
 ---
 
-## 🛠 Installation
+## Installation
 
 ```bash
-git clone https://github.com/NickArm/welcomy.git
+git clone https://github.com/your-org/welcomy.git
 cd welcomy
 
-composer install
 cp .env.example .env
+composer install
 php artisan key:generate
-
-# Configure DB & Cloudinary in .env
-
 php artisan migrate --seed
+
+npm install && npm run dev
 php artisan serve
 ```
 
 ---
 
-## 📌 Admin Credentials (dev only)
+## Developer Notes
 
+### Directory Structure
+
+- `app/Services/PropertyService.php`: main service layer for creating/updating properties
+- `app/Actions/UploadLogoAction.php`: Cloudinary logo handler
+- `app/Actions/UploadGalleryImagesAction.php`: Gallery image uploader with limit check
+- `app/Http/Controllers/PropertyController.php`: Injects services and handles authorization
+- `resources/views/properties`: Blade views with dynamic UI
+
+### Middleware
+
+- `is_superadmin`: custom middleware to restrict admin routes
+- `'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class` for permission checks
+
+### Cloudinary
+
+Ensure `.env` has:
 ```
-email: admin@guesthouse.com
-password: password
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
 ```
 
 ---
 
-## 🔐 Roles & Access
+## Future Improvements
 
-| Role        | Permissions                        |
-|-------------|------------------------------------|
-| Superadmin  | Manage all users & properties      |
-| User        | Manage own properties              |
-
----
-
-## ⚠️ Middleware
-
-- `auth` — Laravel built-in authentication
-- `is_superadmin` — Custom middleware for admin-only routes
-- `active_user_only` — Custom middleware για API endpoints (μόνο ενεργοί χρήστες)
+- [ ] Refactor validation to use Form Requests everywhere
+- [ ] Move Settings, Review, and Image uploads to dedicated actions/services
+- [ ] Add activity logs for Superadmin (e.g. user created/deleted)
+- [ ] Enable bulk import/export of property data (CSV/Excel)
+- [ ] Add unit and feature tests
 
 ---
 
-## 📈 Deployment Tips
+## License
 
-- Χρησιμοποίησε Horizon για job queues (π.χ. emails)
-- Cache routes/permissions σε production:
-  ```bash
-  php artisan route:cache
-  php artisan config:cache
-  php artisan view:cache
-  ```
-
----
-
-## 📮 Contact
-
-Για υποστήριξη: support@welcomy.net
+MIT

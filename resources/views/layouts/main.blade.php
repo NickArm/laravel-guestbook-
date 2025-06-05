@@ -42,8 +42,9 @@
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     <!-- Head -->
     @stack('styles')
-    <link rel="stylesheet" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
-    <script src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js" defer></script>>
+
+    <script src="https://cdn.tiny.cloud/1/sl9j3mwttgt049sgbf8rmzuc2newkr802z2g3sg9entajdbw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 <body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-light)] [--tw-page-bg-dark:var(--tw-coal-500)] [--tw-header-height-default:100px] [[data-sticky-header=on]&]:[--tw-header-height:60px] [--tw-header-height:--tw-header-height-default] bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
 

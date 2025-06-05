@@ -62,6 +62,12 @@
                             Review
                         </a>
 
+                        <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_before_you_go">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
+                            </span>
+                            Before You Go
+                        </a>
+
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_settings">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
@@ -143,8 +149,7 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}">
-                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                    <textarea name="{{ $name }}" class="input rich-text" required>{{ old($name, $value) }}</textarea>
                                 </div>
                             </div>
                         @endforeach
@@ -428,6 +433,23 @@
                     </div>
                 </div>
 
+                <!-- Before You Go Section -->
+                <div class="card pb-2.5" id="section_before_you_go">
+                    <div class="card-header flex justify-between items-center">
+                        <h3 class="card-title">Before You Go</h3>
+                        <label class="switch">
+                            <input type="checkbox" name="enabled_pages[]" value="before_you_go"
+                                {{ in_array('before_you_go', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
+                            <span class="switch-label">Enabled</span>
+                        </label>
+                    </div>
+                    <div class="card-body">
+                        <textarea name="before_you_go[content]" class="input rich-text">
+                            {{ old('before_you_go.content', $property->beforeYouGo->content ?? '') }}
+                        </textarea>
+                    </div>
+                </div>
+
 
                 <!-- Settings Section -->
                 <div class="card pb-2.5" id="section_settings">
@@ -574,3 +596,15 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
 @endisset
+@push('scripts')
+<script>
+  tinymce.init({
+    selector: 'textarea.rich-text',
+    height: 300,
+    menubar: false,
+    plugins: 'link image code lists table',
+    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image table | code',
+    branding: false
+  });
+</script>
+@endpush

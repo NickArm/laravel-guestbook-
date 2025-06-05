@@ -25,6 +25,7 @@ class PropertyService
 
         $this->handleSettings($property, $request);
         $this->handleReview($property, $request);
+        $this->handleBeforeYouGo($property, $request);
         if ($request->hasFile('logo')) {
             $this->uploadLogoAction->execute($request->file('logo'), $property);
         }
@@ -45,6 +46,7 @@ class PropertyService
 
         $this->handleSettings($property, $request);
         $this->handleReview($property, $request);
+        $this->handleBeforeYouGo($property, $request);
         if ($request->hasFile('logo')) {
             $this->uploadLogoAction->execute($request->file('logo'), $property);
         }
@@ -111,6 +113,16 @@ class PropertyService
             $property->review()->updateOrCreate([], [
                 'description' => $request->input('review.description'),
                 'url' => $request->input('review.url'),
+            ]);
+        }
+    }
+
+    protected function handleBeforeYouGo(Property $property, Request $request): void
+    {
+        $content = $request->input('before_you_go.content');
+        if ($content) {
+            $property->beforeYouGo()->updateOrCreate([], [
+                'content' => $content,
             ]);
         }
     }

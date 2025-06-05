@@ -53,6 +53,7 @@ class PropertyApiController extends Controller
                     'title' => $t->title,
                     'description' => $t->description,
                 ]),
+                'before_you_go' => $property->beforeYouGo?->content,
                 'owner' => [
                     'id' => $user->id,
                     'name' => $user->name,
