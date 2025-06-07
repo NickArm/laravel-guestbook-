@@ -8,6 +8,7 @@ use App\Models\Recommendation;
 use App\Models\RecommendationCategory;
 use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RecommendationController extends Controller
 {
@@ -41,7 +42,7 @@ class RecommendationController extends Controller
             'category_id' => 'required|exists:recommendation_categories,id',
         ]);
 
-        auth()->user()->recommendations()->create($validated);
+        $recommendation = auth()->user()->recommendations()->create($validated);
 
         if ($request->hasFile('image')) {
             $this->uploadImageAction->execute($request->file('image'), $recommendation);
@@ -86,6 +87,19 @@ class RecommendationController extends Controller
     public function destroy(Recommendation $recommendation)
     {
         $this->authorize('delete', $recommendation);
+
+        // Αν υπάρχει εικόνα, σβήστη από το Cloudinary
+        if ($recommendation->image_public_id) {
+            try {
+                app(Cloudinary::class)->uploadApi()->destroy($recommendation->image_public_id);
+            } catch (\Exception $e) {
+                // Optional: log error
+                \Log::error('Failed to delete recommendation image from Cloudinary', [
+                    'id' => $recommendation->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         $recommendation->properties()->detach();
         $recommendation->delete();

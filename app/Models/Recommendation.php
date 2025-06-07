@@ -19,6 +19,7 @@ class Recommendation extends Model
         'category_id',
         'title',
         'image_url',
+        'image_public_id',
         'description',
         'website_url',
         'directions_url',
