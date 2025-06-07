@@ -68,6 +68,13 @@
                             Before You Go
                         </a>
 
+                        <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_recommendations">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
+                            </span>
+                            Recommendations
+                        </a>
+
+
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_settings">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
@@ -449,6 +456,27 @@
                         </textarea>
                     </div>
                 </div>
+
+                <!-- Recommendations Section -->
+                <div class="card pb-2.5" id="section_recommendations">
+                    <div class="card-header">
+                        <h3 class="card-title">Local Recommendations</h3>
+                    </div>
+                    <div class="card-body grid gap-4">
+                        @forelse ($recommendations as $rec)
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" name="recommendation_ids[]"
+                                    value="{{ $rec->id }}"
+                                    {{ in_array($rec->id, $selectedRecommendations) ? 'checked' : '' }}
+                                >
+                                <span>{{ $rec->title }} <small class="text-gray-500">({{ ucfirst($rec->category->name) }})</small></span>
+                            </label>
+                        @empty
+                            <p class="text-sm text-gray-500">You haven’t created any recommendations yet.</p>
+                        @endforelse
+                    </div>
+                </div>
+
 
 
                 <!-- Settings Section -->

@@ -35,6 +35,8 @@ class PropertyService
         }
         $this->syncExtras($property, $request);
 
+        $property->recommendations()->sync($request->input('recommendation_ids', []));
+
         return $property;
     }
 
@@ -54,6 +56,9 @@ class PropertyService
             $this->uploadGalleryImagesAction->execute($property, $request->file('gallery'));
         }
         $this->syncExtras($property, $request);
+
+        $property->recommendations()->sync($request->input('recommendation_ids', []));
+
     }
 
     protected function validateProperty(Request $request, $id = null): void
@@ -148,6 +153,9 @@ class PropertyService
         foreach ($request->input('transportation', []) as $item) {
             $property->transportation()->create($item);
         }
+
+        $property->recommendations()->sync($request->input('recommendation_ids', []));
+
     }
 
     public function deleteGalleryImage(Property $property, string $imageId): void

@@ -9,7 +9,7 @@ class PropertyApiController extends Controller
 {
     public function show($slug)
     {
-        $property = Property::with(['rules', 'faqs', 'wifi', 'transportation', 'images'])->where('slug', $slug)->firstOrFail();
+        $property = Property::with(['rules', 'faqs', 'wifi', 'transportation', 'images', 'recommendations.category'])->where('slug', $slug)->firstOrFail();
         $user = $property->user;
 
         if (! $user->is_active) {
@@ -54,6 +54,15 @@ class PropertyApiController extends Controller
                     'description' => $t->description,
                 ]),
                 'before_you_go' => $property->beforeYouGo?->content,
+                'recommendations' => $property->recommendations->map(fn ($rec) => [
+                    'id' => $rec->id,
+                    'title' => $rec->title,
+                    'image_url' => $rec->image_url,
+                    'description' => $rec->description,
+                    'website_url' => $rec->website_url,
+                    'directions_url' => $rec->directions_url,
+                    'category' => $rec->category->name ?? null,
+                ]),
                 'owner' => [
                     'id' => $user->id,
                     'name' => $user->name,

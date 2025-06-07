@@ -82,4 +82,9 @@ class Property extends Model
     {
         return $this->hasOne(BeforeYouGo::class);
     }
+
+    public function recommendations()
+    {
+        return $this->belongsToMany(Recommendation::class);
+    }
 }

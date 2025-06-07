@@ -18,15 +18,20 @@ class PropertyController extends Controller
 
     public function create()
     {
-        return view('properties.create', ['property' => new Property]);
+        $recommendations = auth()->user()->recommendations()->get();
+
+        return view('properties.create', ['property' => new Property, 'recommendations' => $recommendations]);
     }
 
     public function edit(Property $property)
     {
+        $recommendations = auth()->user()->recommendations()->with('category')->get();
+        $selectedRecommendations = $property->recommendations()->pluck('recommendations.id')->toArray();
+
         $this->authorize('update', $property);
         $property->load(['rules', 'faqs', 'wifi', 'transportation', 'images']);
 
-        return view('properties.edit', compact('property'));
+        return view('properties.edit', compact('property', 'recommendations', 'selectedRecommendations'));
     }
 
     public function store(Request $request)

@@ -34,4 +34,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Property::class);
     }
+
+    public function recommendations()
+    {
+        return $this->hasMany(Recommendation::class);
+    }
 }

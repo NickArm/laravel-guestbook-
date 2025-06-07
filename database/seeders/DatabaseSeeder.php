@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             DemoPropertySeeder::class,
+            RecommendationCategorySeeder::class,
         ]);
     }
 }

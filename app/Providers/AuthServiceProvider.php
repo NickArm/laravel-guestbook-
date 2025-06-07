@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Property;
+use App\Models\Recommendation;
 use App\Policies\PropertyPolicy;
-// use Illuminate\Support\Facades\Gate;
+use App\Policies\RecommendationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Property::class => PropertyPolicy::class,
+        Recommendation::class => RecommendationPolicy::class,
     ];
 
     /**
