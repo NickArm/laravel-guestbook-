@@ -25,6 +25,7 @@ class PropertyApiController extends Controller
                 'gallery' => $property->images->pluck('url')->toArray(), // 👈 This is the gallery
                 'enabled_pages' => $property->enabled_pages,
                 'address' => $property->address,
+                'property_directions' => $property->property_directions,
                 'checkin' => $property->checkin,
                 'checkin_instructions' => $property->checkin_instructions,
                 'checkout' => $property->checkout,

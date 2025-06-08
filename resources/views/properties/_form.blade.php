@@ -104,6 +104,10 @@
                                 <input class="input" type="text" name="{{ $name }}" value="{{ old($name, $property->$name ?? '') }}" required>
                             </div>
                         @endforeach
+                            <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                                <label class="form-label max-w-56">Google Maps Directions URL</label>
+                                <input class="input" type="url" name="property_directions" value="{{ old('property_directions', $property->property_directions ?? '') }}">
+                            </div>
 
                         @foreach([
                             ['welcome_message', 'Welcome Message'],
@@ -461,6 +465,11 @@
                 <div class="card pb-2.5" id="section_recommendations">
                     <div class="card-header">
                         <h3 class="card-title">Local Recommendations</h3>
+                        <label class="switch">
+                            <input type="checkbox" name="enabled_pages[]" value="recommendations"
+                                {{ in_array('recommendations', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
+                            <span class="switch-label">Enabled</span>
+                        </label>
                     </div>
                     <div class="card-body grid gap-4">
                         @forelse ($recommendations as $rec)

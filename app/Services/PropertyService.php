@@ -77,6 +77,7 @@ class PropertyService
             'location_country' => 'required|string|max:255',
             'location_description' => 'required|string',
             'google_map_url' => 'nullable|url',
+            'property_directions' => 'nullable|url',
         ], [
             'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
         ]);
@@ -101,6 +102,8 @@ class PropertyService
             'location_country' => $request->location_country,
             'google_map_url' => $request->google_map_url,
             'location_description' => $request->location_description,
+            'property_directions' => $request->property_directions,
+
         ];
     }
 

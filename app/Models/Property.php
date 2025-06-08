@@ -30,6 +30,7 @@ class Property extends Model
         'location_country',
         'google_map_url',
         'location_description',
+        'property_directions',
     ];
 
     protected $casts = [
