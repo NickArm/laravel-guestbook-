@@ -100,7 +100,7 @@ class PropertyService
             'amenities_description' => $request->amenities_description,
             'location_area' => $request->location_area,
             'location_country' => $request->location_country,
-            'google_map_url' => $request->google_map_url,
+            'google_map_url' => html_entity_decode($request->google_map_url),
             'location_description' => $request->location_description,
             'property_directions' => $request->property_directions,
 
