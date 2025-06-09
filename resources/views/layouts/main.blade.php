@@ -40,10 +40,12 @@
     <!-- Metronic Styles -->
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
     <!-- Head -->
     @stack('styles')
 
-    <script src="https://cdn.tiny.cloud/1/sl9j3mwttgt049sgbf8rmzuc2newkr802z2g3sg9entajdbw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 
 </head>
 <body class="antialiased flex h-full text-base text-gray-700 [--tw-page-bg:var(--tw-light)] [--tw-page-bg-dark:var(--tw-coal-500)] [--tw-header-height-default:100px] [[data-sticky-header=on]&]:[--tw-header-height:60px] [--tw-header-height:--tw-header-height-default] bg-[--tw-page-bg] dark:bg-[--tw-page-bg-dark]">
@@ -78,6 +80,8 @@
     <!-- Scripts -->
     <script src="{{ asset('assets/js/core.bundle.js') }}"></script>
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
     @stack('scripts')
 </body>
 </html>

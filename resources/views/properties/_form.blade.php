@@ -108,7 +108,6 @@
                                 <label class="form-label max-w-56">Google Maps Directions URL</label>
                                 <input class="input" type="url" name="property_directions" value="{{ old('property_directions', $property->property_directions ?? '') }}">
                             </div>
-
                         @foreach([
                             ['welcome_message', 'Welcome Message'],
                         ] as [$name, $label])
@@ -118,14 +117,15 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <input id="{{ $name }}" type="hidden" name="{{ $name }}" value="{{ $value }}" required>
-                                    <trix-editor input="{{ $name }}"></trix-editor>
+                                    <textarea id="{{ $name }}" name="{{ $name }}" class="summernote" required>{!! $value !!}</textarea>
                                     @error($name)
                                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
                         @endforeach
+
+
 
 
                     </div>
@@ -157,12 +157,18 @@
                             @php
                                 $value = old($name, $property->$name ?? '');
                             @endphp
-                            <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-                                <label class="form-label max-w-56">{{ $label }}</label>
-                                <div class="grow">
-                                    <textarea name="{{ $name }}" class="input rich-text" required>{{ old($name, $value) }}</textarea>
+                                <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                                    <label class="form-label max-w-56">{{ $label }}</label>
+                                    <div class="grow">
+                                        <textarea id="amenities_description" name="amenities_description" class="summernote">
+                                            {!! old('amenities_description', $property->amenities_description ?? '') !!}
+                                        </textarea>
+                                        @error($name)
+                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
+
                         @endforeach
 
                     </div>
@@ -455,9 +461,13 @@
                         </label>
                     </div>
                     <div class="card-body">
-                        <textarea name="before_you_go[content]" class="input rich-text">
-                            {{ old('before_you_go.content', $property->beforeYouGo->content ?? '') }}
-                        </textarea>
+                        <div class="form-group">
+                            <label for="before_you_go_content">Before You Go</label>
+                            <textarea id="before_you_go_content" name="before_you_go[content]" class="summernote">
+                            {!! old('before_you_go.content', $property->beforeYouGo->content ?? '') !!}
+                            </textarea>
+
+                        </div>
                     </div>
                 </div>
 
@@ -634,14 +644,16 @@ document.addEventListener('DOMContentLoaded', function () {
 @endpush
 @endisset
 @push('scripts')
-<script>
-  tinymce.init({
-    selector: 'textarea.rich-text',
-    height: 300,
-    menubar: false,
-    plugins: 'link image code lists table',
-    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image table | code',
-    branding: false
-  });
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('.summernote').summernote({
+            height: 300,
+            codeviewFilter: false,
+            codeviewIframeFilter: true
+        });
+    });
 </script>
 @endpush
+
+
+
