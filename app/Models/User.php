@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Recommendation::class);
     }
+
+    public function editorImages()
+    {
+        return $this->hasMany(\App\Models\EditorImage::class);
+    }
 }

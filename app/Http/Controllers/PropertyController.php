@@ -59,6 +59,7 @@ class PropertyController extends Controller
     public function destroy(Property $property)
     {
         $this->authorize('delete', $property);
+        $this->propertyService->deleteAllEditorImages($property);
         $property->delete();
 
         return redirect()->route('dashboard')->with('success', 'Property deleted!');

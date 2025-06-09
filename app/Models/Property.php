@@ -88,4 +88,9 @@ class Property extends Model
     {
         return $this->belongsToMany(Recommendation::class);
     }
+
+    public function editorImages()
+    {
+        return $this->morphMany(EditorImage::class, 'imageable');
+    }
 }
