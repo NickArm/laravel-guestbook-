@@ -18,10 +18,13 @@ class UploadRecommendationImageAction
             }
         }
 
+        $user = $recommendation->user;
+        $userFolder = 'users/'.$user->id.'/recommendations';
+
         $upload = app(Cloudinary::class)->uploadApi()->upload(
             $image->getRealPath(),
             [
-                'folder' => 'recommendations/'.$recommendation->id,
+                'folder' => $userFolder,
                 'use_filename' => true,
                 'unique_filename' => false,
             ]
