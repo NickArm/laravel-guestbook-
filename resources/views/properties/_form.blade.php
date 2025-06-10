@@ -23,7 +23,7 @@
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_amenities">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
-                            Amenities
+                            Amenities & appliances
                         </a>
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_wifi">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
@@ -78,7 +78,7 @@
                         <a class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm text-gray-800 hover:text-primary hover:font-medium scrollspy-active:bg-secondary-active scrollspy-active:text-primary scrollspy-active:font-medium dark:hover:bg-coal-300 dark:hover:border-gray-100 hover:rounded-lg dark:scrollspy-active:bg-coal-300 dark:scrollspy-active:border-gray-100" data-scrollspy-anchor="true" href="#section_settings">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4 scrollspy-active:before:bg-primary">
                             </span>
-                            Appearance Settings
+                            Branding
                         </a>
 
                     </div>
@@ -117,33 +117,23 @@
                             <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                                 <label class="form-label max-w-56">{{ $label }}</label>
                                 <div class="grow">
-                                    <textarea id="{{ $name }}" name="{{ $name }}" class="summernote" required>{!! $value !!}</textarea>
+                                    <textarea id="{{ $name }}" name="{{ $name }}" class="ckeditor">{!! $value !!}</textarea>
                                     @error($name)
                                         <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
                         @endforeach
-
-
-
-
                     </div>
 
-                    <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-                        <label class="form-label max-w-56">Logo</label>
-                         <input type="file" name="logo" id="logo" class="input" accept="image/*">
-                        @if (!empty($property->logo_url))
-                            <img src="{{ $property->logo_url }}" alt="Logo" class="w-28 mt-2 rounded border">
-                        @endif
-                    </div>
+
 
                 </div>
 
                 <!-- Amenities Section -->
                 <div class="card pb-2.5" id="section_amenities">
                     <div class="card-header flex justify-between items-center">
-                        <h3 class="card-title">Amenities</h3>
+                        <h3 class="card-title">Amenities & appliances</h3>
                         <label class="switch">
                             <input type="checkbox" name="enabled_pages[]" value="amenities"
                                 {{ in_array('amenities', old('enabled_pages', $property->enabled_pages ?? [])) ? 'checked' : '' }}>
@@ -157,19 +147,17 @@
                             @php
                                 $value = old($name, $property->$name ?? '');
                             @endphp
-                                <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-                                    <label class="form-label max-w-56">{{ $label }}</label>
-                                    <div class="grow">
-                                        <textarea id="amenities_description" name="amenities_description" class="summernote">
-                                            {!! old('amenities_description', $property->amenities_description ?? '') !!}
-                                        </textarea>
-                                        @error($name)
-                                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                            <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                                <label class="form-label max-w-56">{{ $label }}</label>
+                                <div class="grow">
+                                    <textarea id="{{ $name }}" name="{{ $name }}" class="ckeditor">{!! $value !!}</textarea>
+                                    @error($name)
+                                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                    @enderror
                                 </div>
-
+                            </div>
                         @endforeach
+
 
                     </div>
                 </div>
@@ -463,10 +451,9 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="before_you_go_content">Before You Go</label>
-                            <textarea id="before_you_go_content" name="before_you_go[content]" class="summernote">
-                            {!! old('before_you_go.content', $property->beforeYouGo->content ?? '') !!}
+                            <textarea id="before_you_go_content" name="before_you_go[content]" class="ckeditor">
+                                {!! old('before_you_go.content', $property->beforeYouGo->content ?? '') !!}
                             </textarea>
-
                         </div>
                     </div>
                 </div>
@@ -501,9 +488,17 @@
                 <!-- Settings Section -->
                 <div class="card pb-2.5" id="section_settings">
                     <div class="card-header">
-                        <h3 class="card-title">Appearance Settings</h3>
+                        <h3 class="card-title">Branding</h3>
                     </div>
                     <div class="card-body grid gap-5">
+
+                        <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                            <label class="form-label max-w-56">Logo</label>
+                            <input type="file" name="logo" id="logo" class="input" accept="image/*">
+                            @if (!empty($property->logo_url))
+                                <img src="{{ $property->logo_url }}" alt="Logo" class="w-28 mt-2 rounded border">
+                            @endif
+                        </div>
                         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                             <label class="form-label max-w-56">Primary Color</label>
                             <input type="color" name="settings[primary_color]" class="input w-20" value="{{ old('settings.primary_color', $property->settings->primary_color ?? '#000000') }}">
@@ -647,305 +642,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 @push('scripts')
-    <script>
-$(document).ready(function () {
-    // Store image tracking per editor instance
-    const imageTrackers = new WeakMap();
-
-    $('.summernote').each(function() {
-        const $editor = $(this);
-        const editorId = this.id || 'editor_' + Math.random().toString(36).substr(2, 9);
-
-        // Initialize image tracker for this editor
-        imageTrackers.set(this, {
-            currentImages: new Set(),
-            uploadedImages: new Map() // Map URL to image data (id, public_id)
-        });
-
-        $editor.summernote({
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
-                ['view', ['fullscreen', 'codeview', 'help']]
-            ],
-            callbacks: {
-                onInit: function() {
-                    console.log('Summernote initialized for:', editorId);
-
-                    // Clean up any data URI images from previous sessions
-                    const $editor = $(this);
-                    const content = $editor.summernote('code');
-                    const cleanedContent = content.replace(/<img[^>]*src="data:image\/[^"]*"[^>]*>/gi, '');
-
-                    if (cleanedContent !== content) {
-                        $editor.summernote('code', cleanedContent);
-                    }
-
-                    updateImageTracking(this);
-                },
-
-                onImageUpload: function(files) {
-                    const editor = this;
-                    for (let i = 0; i < files.length; i++) {
-                        uploadImageToCloudinary(files[i], editor);
-                    }
-                },
-
-                onChange: function(contents, $editable) {
-                    // Debounce the deletion check
-                    clearTimeout(this.deleteCheckTimeout);
-                    this.deleteCheckTimeout = setTimeout(() => {
-                        checkForDeletedImages(this);
-                        updateImageTracking(this);
-                    }, 500);
-                },
-
-                onKeydown: function(e) {
-                    // Check if an image is selected when delete/backspace is pressed
-                    if (e.keyCode === 8 || e.keyCode === 46) {
-                        const selection = window.getSelection();
-                        const selectedNode = selection.anchorNode;
-
-                        if (selectedNode && selectedNode.nodeName === 'IMG') {
-                            // Image will be deleted
-                            setTimeout(() => {
-                                checkForDeletedImages(this);
-                                updateImageTracking(this);
-                            }, 100);
-                        }
-                    }
-                },
-
-                onPaste: function(e) {
-                    const clipboardData = e.originalEvent.clipboardData;
-                    if (clipboardData && clipboardData.items) {
-                        let hasImage = false;
-
-                        for (const item of clipboardData.items) {
-                            if (item.type.indexOf("image") !== -1) {
-                                hasImage = true;
-                                e.preventDefault();
-
-                                const file = item.getAsFile();
-                                if (file) {
-                                    uploadImageToCloudinary(file, this);
-                                }
-                            }
-                        }
-
-                        if (hasImage) {
-                            return false; // Prevent default paste behavior for images
-                        }
-                    }
-                }
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function() {
+        document.querySelectorAll('textarea.ckeditor').forEach(function (textarea) {
+            // Καταστροφή όλων των instances
+            if (CKEDITOR.instances[textarea.id]) {
+                CKEDITOR.instances[textarea.id].destroy(true);
             }
-        });
-    });
-
-    function getTracker(editor) {
-        return imageTrackers.get(editor) || { currentImages: new Set(), uploadedImages: new Map() };
-    }
-
-    function updateImageTracking(editor) {
-        const tracker = getTracker(editor);
-        const newImages = new Set();
-        const $content = $(editor).summernote('code');
-
-        // Parse content and extract all image URLs
-        const parser = new DOMParser();
-        const doc = parser.parseFromString($content, 'text/html');
-        const images = doc.querySelectorAll('img');
-
-        images.forEach(img => {
-            if (img.src) {
-                newImages.add(img.src);
+            // Αφαίρεση από DOM αν χρειάζεται
+            var editorElement = document.getElementById('cke_' + textarea.id);
+            if (editorElement) {
+                editorElement.remove();
             }
-        });
-
-        tracker.currentImages = newImages;
-    }
-
-    function checkForDeletedImages(editor) {
-        const tracker = getTracker(editor);
-        const currentContent = $(editor).summernote('code');
-        const currentImagesInEditor = new Set();
-
-        // Extract all current image URLs
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(currentContent, 'text/html');
-        const images = doc.querySelectorAll('img');
-
-        images.forEach(img => {
-            if (img.src) {
-                currentImagesInEditor.add(img.src);
-            }
-        });
-
-        // Find deleted images
-        tracker.currentImages.forEach(imageUrl => {
-            if (!currentImagesInEditor.has(imageUrl)) {
-                // Image was deleted
-                const imageData = tracker.uploadedImages.get(imageUrl);
-                if (imageData) {
-                    handleImageDeletion(imageUrl, imageData);
-                    tracker.uploadedImages.delete(imageUrl);
-                }
-            }
-        });
-
-        tracker.currentImages = currentImagesInEditor;
-    }
-
-    function handleImageDeletion(imageUrl, imageData) {
-        console.log("Deleting image from Cloudinary:", imageUrl, imageData);
-
-        // Show loading indicator (optional)
-        const $status = $('<div class="alert alert-info">Deleting image from server...</div>');
-        $('.summernote').first().before($status);
-
-        $.ajax({
-            url: '{{ route("editor.delete") }}',
-            method: 'POST',
-            data: {
-                url: imageUrl,
-                public_id: imageData.public_id,
-                id: imageData.id
-            },
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                console.log("Image successfully deleted:", response);
-                $status.removeClass('alert-info').addClass('alert-success')
-                       .text('Image deleted successfully').delay(2000).fadeOut();
-            },
-            error: function(xhr, status, error) {
-                console.error("Failed to delete image:", error);
-                $status.removeClass('alert-info').addClass('alert-danger')
-                       .text('Failed to delete image from server').delay(3000).fadeOut();
-            }
-        });
-    }
-
-    function uploadImageToCloudinary(file, editor) {
-        // Validate file
-        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            alert('Please upload only images (JPEG, PNG, GIF, WebP)');
-            return;
-        }
-
-        // Check file size (4MB max)
-        if (file.size > 4 * 1024 * 1024) {
-            alert('Image size must be less than 4MB');
-            return;
-        }
-
-
-        const data = new FormData();
-        data.append("image", file);
-
-        // Show loading placeholder
-        const loadingUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjUwIiB5PSI1MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPlVwbG9hZGluZy4uLjwvdGV4dD48L3N2Zz4=';
-
-        const $placeholder = $('<img>')
-            .attr('src', loadingUrl)
-            .attr('data-uploading', 'true')
-            .css({ opacity: 0.5 });
-
-        $(editor).summernote('insertNode', $placeholder[0]);
-
-        $.ajax({
-            url: '{{ route("editor.upload") }}',
-            method: 'POST',
-            data: data,
-            contentType: false,
-            processData: false,
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            xhr: function() {
-                const xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener("progress", function(evt) {
-                    if (evt.lengthComputable) {
-                        const percentComplete = evt.loaded / evt.total * 100;
-                        console.log('Upload progress:', percentComplete + '%');
-                    }
-                }, false);
-                return xhr;
-            },
-            success: function(response) {
-                if (response.url) {
-                    // Create a new image element with the actual URL
-                    const $newImage = $('<img>')
-                        .attr('src', response.url)
-                        .attr('alt', file.name || 'Uploaded image')
-                        .css({ maxWidth: '100%' });
-
-                    // Replace the placeholder with the new image
-                    $placeholder.replaceWith($newImage);
-
-                    // Store image data for deletion tracking
-                    const tracker = getTracker(editor);
-                    tracker.uploadedImages.set(response.url, {
-                        id: response.id,
-                        public_id: response.public_id,
-                        url: response.url
-                    });
-
-                    // Force Summernote to recognize the change
-                    $(editor).summernote('code', $(editor).summernote('code'));
-
-                    // Update tracking
-                    setTimeout(() => updateImageTracking(editor), 100);
-                } else {
-                    $placeholder.remove();
-                    alert('Upload failed: No URL returned');
-                }
-            },
-            error: function(xhr, status, error) {
-                $placeholder.remove();
-                console.error("Upload error:", error);
-
-                let errorMessage = 'Image upload failed';
-                if (xhr.responseJSON && xhr.responseJSON.error) {
-                    errorMessage = xhr.responseJSON.error;
-                }
-                alert(errorMessage);
-            }
-        });
-    }
-
-    // Optional: Clean up orphaned images when form is submitted
-    $('form').on('submit', function() {
-        // Link all uploaded images to the content being saved
-        const allUploadedImages = [];
-
-        $('.summernote').each(function() {
-            const tracker = getTracker(this);
-            tracker.uploadedImages.forEach((imageData, url) => {
-                if (tracker.currentImages.has(url)) {
-                    allUploadedImages.push(imageData.id);
-                }
+            // Επαναδημιουργία με τις σωστές ρυθμίσεις
+            CKEDITOR.replace(textarea.id, {
+                height: 200,
+                removePlugins: 'uploadimage,uploadwidget,filetools,filebrowser,image,pastetools,pastefromword,pastefromgdocs,pastefromlibreoffice,pastetext,anchor'
             });
         });
-
-        if (allUploadedImages.length > 0) {
-            // Add hidden input with image IDs to link them
-            $('<input>')
-                .attr('type', 'hidden')
-                .attr('name', 'editor_image_ids')
-                .attr('value', JSON.stringify(allUploadedImages))
-                .appendTo(this);
-        }
-    });
+    }, 100); // 100ms delay
 });
-    </script>
+</script>
 @endpush
+
 

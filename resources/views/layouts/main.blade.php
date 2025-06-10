@@ -41,7 +41,6 @@
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
     <!-- Head -->
     @stack('styles')
 
@@ -80,8 +79,7 @@
     <!-- Scripts -->
     <script src="{{ asset('assets/js/core.bundle.js') }}"></script>
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     @stack('scripts')
 </body>
 </html>

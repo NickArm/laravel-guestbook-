@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EditorImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RecommendationController;
@@ -71,12 +70,14 @@ Route::middleware(['auth'])->group(function () {
     // Ανά property: Προβολή και διαχείριση Recommendations που θα εμφανιστούν
     Route::get('/properties/{property}/recommendations', [RecommendationController::class, 'index'])->name('properties.recommendations.index');
     Route::post('/properties/{property}/recommendations/sync', [RecommendationController::class, 'syncPropertyRecommendations'])->name('properties.recommendations.sync');
-    Route::post('/editor/upload', [EditorImageController::class, 'upload'])->name('editor.upload');
-    Route::post('/editor/delete', [EditorImageController::class, 'delete'])->name('editor.delete');
-    Route::post('/editor/link-images', [EditorImageController::class, 'linkImages'])->name('editor.link');
-    Route::get('/editor/my-images', [EditorImageController::class, 'getUserImages'])->name('editor.images');
-    Route::delete('/editor/cleanup', [EditorImageController::class, 'cleanupOrphaned'])->name('editor.cleanup');
 
+});
+
+Route::prefix('properties/{property}/appliances')->name('properties.appliances.')->middleware(['auth'])->group(function () {
+    Route::post('/', [App\Http\Controllers\ApplianceController::class, 'store'])->name('store');
+    Route::get('/{appliance}/edit', [App\Http\Controllers\ApplianceController::class, 'edit'])->name('edit');
+    Route::put('/{appliance}', [App\Http\Controllers\ApplianceController::class, 'update'])->name('update');
+    Route::delete('/{appliance}', [App\Http\Controllers\ApplianceController::class, 'destroy'])->name('destroy');
 });
 
 /*
