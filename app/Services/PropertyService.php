@@ -43,9 +43,9 @@ class PropertyService
 
     public function updateFullProperty(Property $property, Request $request): void
     {
-        $this->validateProperty($request, $property->id);
+        $this->validateProperty($request, $property->id, true); // Added isUpdate flag
 
-        $property->update($this->buildPropertyData($request));
+        $property->update($this->buildPropertyData($request, true)); // Added isUpdate flag
 
         $this->handleSettings($property, $request);
         $this->handleReview($property, $request);
@@ -61,52 +61,82 @@ class PropertyService
 
         $this->syncExtras($property, $request);
         $property->recommendations()->sync($request->input('recommendation_ids', []));
-
     }
 
-    protected function validateProperty(Request $request, $id = null): void
+    protected function validateProperty(Request $request, $id = null, bool $isUpdate = false): void
     {
-        $request->validate([
+        $rules = [
+            // Required fields from Home tab only
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|regex:/^[a-z0-9\-]+$/|unique:properties,slug,'.$id,
-            'address' => 'required|string|max:255',
+            'address' => 'required|string|max:500',
             'welcome_title' => 'required|string|max:255',
-            'welcome_message' => 'required|string',
-            'checkin' => 'required|string',
-            'checkout' => 'required|string',
-            'checkin_instructions' => 'required|string',
-            'checkout_instructions' => 'required|string',
-            'location_area' => 'required|string|max:255',
-            'location_country' => 'required|string|max:255',
-            'location_description' => 'required|string',
-            'google_map_url' => 'nullable|url',
+            'welcome_message' => 'required|string|max:2000',
             'property_directions' => 'nullable|url',
-        ], [
+
+            // All other fields are optional for initial creation
+            'checkin' => 'nullable|string',
+            'checkout' => 'nullable|string',
+            'checkin_instructions' => 'nullable|string',
+            'checkout_instructions' => 'nullable|string',
+            'location_area' => 'nullable|string|max:255',
+            'location_country' => 'nullable|string|max:255',
+            'location_description' => 'nullable|string',
+            'google_map_url' => 'nullable|url',
+            'amenities_description' => 'nullable|string',
+        ];
+
+        // Only validate slug during creation AND only if provided
+        if (! $isUpdate && $request->filled('slug')) {
+            $rules['slug'] = 'string|regex:/^[a-z0-9\-]+$/|unique:properties,slug,'.$id;
+        }
+
+        $messages = [
+            'name.required' => 'Property name is required.',
+            'address.required' => 'Property address is required.',
+            'welcome_title.required' => 'Welcome title is required.',
+            'welcome_message.required' => 'Welcome message is required.',
             'slug.regex' => 'The slug must only contain lowercase letters, numbers, and hyphens.',
-        ]);
+            'slug.unique' => 'This slug is already taken. Please choose a different one.',
+            'property_directions.url' => 'Please enter a valid URL for directions.',
+            'google_map_url.url' => 'Please enter a valid URL for Google Maps.',
+        ];
+
+        $request->validate($rules, $messages);
     }
 
-    protected function buildPropertyData(Request $request): array
+    protected function buildPropertyData(Request $request, bool $isUpdate = false): array
     {
-        return [
+        $data = [
+            // Required Home tab fields
             'name' => $request->name,
-            'slug' => Str::slug($request->slug ?? $request->name),
             'address' => $request->address,
+            'welcome_title' => $request->welcome_title,
+            'welcome_message' => $request->welcome_message,
+            'property_directions' => $request->property_directions,
+
+            // Optional fields that might be filled later
             'enabled_pages' => $request->input('enabled_pages', []),
             'is_active' => true,
             'checkin' => $request->checkin,
             'checkin_instructions' => $request->checkin_instructions,
             'checkout' => $request->checkout,
             'checkout_instructions' => $request->checkout_instructions,
-            'welcome_title' => $request->welcome_title,
-            'welcome_message' => $request->welcome_message,
             'amenities_description' => $request->amenities_description,
             'location_area' => $request->location_area,
             'location_country' => $request->location_country,
-            'google_map_url' => html_entity_decode($request->google_map_url),
+            'google_map_url' => $request->google_map_url ? html_entity_decode($request->google_map_url) : null,
             'location_description' => $request->location_description,
-            'property_directions' => $request->property_directions,
         ];
+
+        // Only set slug during creation (model will auto-generate if empty)
+        if (! $isUpdate) {
+            $data['slug'] = $request->filled('slug') ?
+                Str::slug($request->slug) :
+                null; // Let model auto-generate from name
+        }
+        // During update, slug is excluded and protected by model
+
+        return $data;
     }
 
     protected function handleSettings(Property $property, Request $request): void

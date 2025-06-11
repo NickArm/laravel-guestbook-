@@ -13,3 +13,16 @@ header .logo{
 .cke_notifications_area{
   display: none;
 }
+
+
+.appliances-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .appliances-grid {
+        grid-template-columns: 1fr;
+    }
+}

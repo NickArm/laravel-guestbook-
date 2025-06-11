@@ -32,5 +32,6 @@ class UploadLogoAction
         $property->update([
             'logo_url' => $upload['secure_url'],
         ]);
+
     }
 }

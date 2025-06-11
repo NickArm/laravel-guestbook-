@@ -21,15 +21,8 @@
     <!-- Content -->
     <main class="grow" id="content" role="content">
 
-            <div class="grid gap-5 lg:gap-7.5">
-                @include('properties._form', [
-                    'action' => route('properties.update', $property),
-                    'method' => 'PUT',
-                    'property' => $property,
-                    'submitLabel' => 'Update Property'
-                ])
+                @livewire('property-manager', ['property' => $property])
 
-            </div>
 
     </main>
     <!-- End of Content -->

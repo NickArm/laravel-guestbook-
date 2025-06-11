@@ -20,14 +20,7 @@
     <!-- End of Toolbar -->
     <!-- Content -->
     <main class="grow" id="content" role="content">
-        <div class="grid gap-5 lg:gap-7.5">
-                        @include('properties._form', [
-                            'action' => route('properties.store'),
-                            'method' => 'POST',
-                            'submitLabel' => 'Create Property',
-                            'property' => null
-                        ])
-        </div>
+        @livewire('property-manager')
     </main>
     <!-- End of Content -->
     <!-- Footer -->

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -39,6 +40,44 @@ class Property extends Model
         'gallery' => 'array',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($property) {
+            if (empty($property->slug)) {
+                $property->slug = $property->generateUniqueSlug($property->name);
+            }
+        });
+
+        static::updating(function ($property) {
+            if ($property->isDirty('slug') && $property->getOriginal('slug')) {
+                $property->slug = $property->getOriginal('slug');
+            }
+        });
+    }
+
+    public function generateUniqueSlug($name)
+    {
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        while (static::where('slug', $slug)->where('id', '!=', $this->id ?? null)->exists()) {
+            $slug = $baseSlug.'-'.$counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Get the route key for the model (uses slug for routing)
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
