@@ -1,97 +1,47 @@
-# Welcomy Guesthouse Management System
+# Welcomy Backend (Laravel)
 
-This Laravel + Tailwind + Alpine.js based web app allows guesthouse owners and superadmins to manage properties, users, and content in a user-friendly dashboard.
+This Laravel backend powers the Welcomy Guestbook platform — a digital welcome book system for properties such as apartments, lofts, and guesthouses.
 
----
+## Project Overview
+
+Welcomy allows property owners to create beautifully structured welcome pages for their guests, hosted under a custom subdomain.
+
+### Example Case Studies
+
+- https://lias-apartment.welcomy.net/
+- https://vasileiosloft.welcomy.net/
 
 ## Features
 
-### ✅ User Roles
-- Superadmin:
-  - Manage users (create, edit, deactivate)
-  - See all properties
-- User:
-  - Manage only their own properties
-
-### 🏡 Property Management
-- CRUD operations for properties
-- Supports multiple optional sections:
+- Laravel 10.x with REST API architecture
+- Multi-auth system for property owners
+- CRUD functionality for:
+  - Properties
   - Rules
-  - FAQs
   - Amenities
-  - Transportation
-  - Review
-  - WiFi settings
-- Image upload via Cloudinary:
-  - Logo (1 image)
-  - Gallery (up to 10 images)
+  - Location Info
+  - WiFi Info
+  - FAQs
+  - Transportation Info
+  - Reviews
+  - Recommendations (with categories and media)
+  - Appearance Settings (colors, logo, gallery)
+  - Before You Go Notes
+  - Appliances (images, descriptions, YouTube links)
+- Cloudinary integration for optimized image uploads (per property and user)
+- Livewire-powered admin UI
+- Dynamic subdomain routing for property access
+- Tailored JSON API for consumption by the frontend
+- Modular design using separate Eloquent models
+- Factory, Seeder, and UUID support
+- Validation on all endpoints
+- Policy Gates for user-specific data access
+- Environment: PHP 8.2, MySQL/PostgreSQL, Laravel Sail or Docker compatible
 
-### ⚙️ Settings
-- Customize each property's primary/secondary colors
-- Enable/disable content sections via checkboxes
+## Licensing
 
-### 📍 Location Support
-- Stores location description, area, country, and Google Map URL
+**LICENSE: All rights reserved.**
 
-### 🔐 Authentication & Access Control
-- Laravel Breeze-based auth (email & password)
-- Role-based route protection via middleware
+This repository is public only for showcase purposes. Cloning, reusing, or copying any part of this code without prior permission is strictly prohibited.
 
----
-
-## Installation
-
-```bash
-git clone https://github.com/your-org/welcomy.git
-cd welcomy
-
-cp .env.example .env
-composer install
-php artisan key:generate
-php artisan migrate --seed
-
-npm install && npm run dev
-php artisan serve
-```
-
----
-
-## Developer Notes
-
-### Directory Structure
-
-- `app/Services/PropertyService.php`: main service layer for creating/updating properties
-- `app/Actions/UploadLogoAction.php`: Cloudinary logo handler
-- `app/Actions/UploadGalleryImagesAction.php`: Gallery image uploader with limit check
-- `app/Http/Controllers/PropertyController.php`: Injects services and handles authorization
-- `resources/views/properties`: Blade views with dynamic UI
-
-### Middleware
-
-- `is_superadmin`: custom middleware to restrict admin routes
-- `'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class` for permission checks
-
-### Cloudinary
-
-Ensure `.env` has:
-```
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-```
-
----
-
-## Future Improvements
-
-- [ ] Refactor validation to use Form Requests everywhere
-- [ ] Move Settings, Review, and Image uploads to dedicated actions/services
-- [ ] Add activity logs for Superadmin (e.g. user created/deleted)
-- [ ] Enable bulk import/export of property data (CSV/Excel)
-- [ ] Add unit and feature tests
-
----
-
-## License
-
-MIT
+Contact: **Armenis Nick – armenisnick@gmail.com**
