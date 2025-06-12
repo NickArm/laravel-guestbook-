@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserActivated;
+use App\Mail\UserDeactivated;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -59,15 +61,23 @@ class UserController extends Controller
             'is_active' => ['nullable'],
         ]);
 
+        $wasInactive = ! $user->is_active;
+        $isActiveNow = $request->has('is_active');
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'property_limit' => $request->property_limit,
-            'is_active' => $request->has('is_active'),
+            'is_active' => $isActiveNow,
         ]);
 
-        // Sync role
         $user->syncRoles([$request->role]);
+
+        if ($wasInactive && $isActiveNow) {
+            Mail::to($user->email)->send(new UserActivated($user));
+        } elseif (! $isActiveNow && $user->is_active) {
+            Mail::to($user->email)->send(new UserDeactivated($user));
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'User updated!');
     }

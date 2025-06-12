@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +25,9 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
@@ -67,7 +71,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/recommendations/{recommendation}', [RecommendationController::class, 'update'])->name('recommendations.update');
     Route::delete('/recommendations/{recommendation}', [RecommendationController::class, 'destroy'])->name('recommendations.destroy');
 
-    // Ανά property: Προβολή και διαχείριση Recommendations που θα εμφανιστούν
     Route::get('/properties/{property}/recommendations', [RecommendationController::class, 'index'])->name('properties.recommendations.index');
     Route::post('/properties/{property}/recommendations/sync', [RecommendationController::class, 'syncPropertyRecommendations'])->name('properties.recommendations.sync');
 

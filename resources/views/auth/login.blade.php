@@ -73,13 +73,36 @@
     <!-- Right (Login Form) -->
     <div class="login-side">
         <div class="max-w-md bg-white shadow rounded-lg p-10">
+
+            @if (session('status'))
+                <div class="mb-4 text-sm text-green-600 bg-green-100 border border-green-300 rounded p-3">
+                    {{ session('status') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mb-4 text-sm text-red-600 bg-red-100 border border-red-300 rounded p-3">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 text-sm text-red-600 bg-red-100 border border-red-300 rounded p-3">
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-5">
                 @csrf
                 <div class="text-center mb-2.5">
                     <h3 class="text-lg font-medium text-gray-900 mb-2.5">Sign in to your account</h3>
                     <div class="text-sm text-gray-600">
                         Need an account?
-                        <a href="#" class="text-primary underline">Sign up</a>
+                        <a href="{{ route('register') }}" class="text-primary underline">Sign up</a>
                     </div>
                 </div>
 

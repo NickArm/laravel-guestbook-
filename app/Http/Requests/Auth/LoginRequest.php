@@ -41,13 +41,21 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $user = \App\Models\User::where('email', $this->email)->first();
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+        if (! $user || ! \Hash::check($this->password, $user->password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => __('auth.failed'),
             ]);
         }
+
+        if (! $user->is_active) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => 'Your account is not yet activated. Please wait for approval.',
+            ]);
+        }
+
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }
