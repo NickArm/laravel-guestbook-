@@ -10,14 +10,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
+use Spatie\Activitylog\Models\Activity;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::with('roles')->get();
+        $activities = Activity::latest()->take(20)->get(); // ή βάλε ->whereNotNull('causer_id') αν θες μόνο με χρήστη
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'activities'));
     }
 
     public function create()

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Property extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, LogsActivity;
 
     protected $fillable = [
         'name',
@@ -42,6 +44,9 @@ class Property extends Model
 
     protected static function booted()
     {
+
+        parent::booted();
+
         static::creating(function ($property) {
             if (empty($property->slug)) {
                 $property->slug = $property->generateUniqueSlug($property->name);
@@ -75,6 +80,28 @@ class Property extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'slug',
+                'logo_url',
+                'address',
+                'enabled_pages',
+                'is_active',
+                'checkin',
+                'checkout',
+                'welcome_title',
+                'location_area',
+                'google_map_url',
+                'property_directions',
+            ])
+            ->useLogName('property')
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     // Relationships
