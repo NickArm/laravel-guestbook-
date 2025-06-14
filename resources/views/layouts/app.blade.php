@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
     <script src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js" defer></script>>
 </head>
-<body class="font-sans antialiased bg-gray-50 text-gray-800">
+<body class="font-sans antialiased bg-gray-50 text-gray-800 container-fixed">
     <div class="min-h-screen flex flex-col">
 
         {{-- Optional Header (Used for breadcrumbs, titles, etc.) --}}

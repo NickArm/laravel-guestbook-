@@ -43,7 +43,7 @@
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-8">
 
     @if (session('success'))
         <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
@@ -65,7 +65,7 @@
     <!-- Users Card -->
     <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-8">
         <!-- Card Header -->
-        <div class="border-b border-gray-200 px-6 py-4">
+        <div class="border-b border-gray-200 px-2 py-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
                 <div class="flex items-center space-x-4">
                     <div class="relative">
@@ -149,7 +149,7 @@
                     <table class="min-w-full divide-y divide-gray-200" id="kt_table_users">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left">
+                                <th class="px-2 py-3 text-left">
                                     <div class="flex items-center">
                                         <input type="checkbox"
                                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -157,22 +157,22 @@
                                                data-kt-check-target="#kt_table_users input[type='checkbox']:not([data-kt-check])">
                                     </div>
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+                                <th class="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($users as $user)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <input type="checkbox"
                                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                                value="{{ $user->id }}">
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <div class="flex items-center">
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">
@@ -184,7 +184,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         @forelse($user->getRoleNames() as $role)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-1">
                                                 {{ $role }}
@@ -193,7 +193,7 @@
                                             <span class="text-sm text-gray-500">No role assigned</span>
                                         @endforelse
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         @if ($user->is_active)
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                 <span class="w-2 h-2 bg-green-400 rounded-full mr-1.5"></span>
@@ -206,11 +206,11 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-900">
+                                    <td class="px-2 py-4 text-sm text-gray-900">
                                         <div>{{ $user->updated_at->format('M d, Y') }}</div>
                                         <div class="text-xs text-gray-500">{{ $user->updated_at->format('h:i A') }}</div>
                                     </td>
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-2 py-4 text-right">
                                         <div class="relative inline-block text-left">
                                             <button type="button"
                                                     class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -267,7 +267,7 @@
         <!-- Activity Log Card -->
         <div class="bg-white shadow-sm rounded-lg border border-gray-200">
             <!-- Card Header -->
-            <div class="border-b border-gray-200 px-6 py-4">
+            <div class="border-b border-gray-200 px-2 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <i class="ki-duotone ki-abstract-39 text-blue-600 text-2xl mr-3">
@@ -319,17 +319,17 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Model</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Changes</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Model</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Changes</th>
+                                <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($activities as $log)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
                                                 @if($log->causer && $log->causer->photo)
@@ -354,7 +354,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         @php
                                             $actionClasses = match($log->description) {
                                                 'created' => 'bg-green-100 text-green-800',
@@ -377,11 +377,11 @@
                                             {{ ucfirst($log->description) }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <div class="text-sm font-medium text-gray-900">{{ class_basename($log->subject_type) }}</div>
                                         <div class="text-sm text-gray-500">{{ Str::limit($log->subject_id, 12, '...') }}</div>
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         @if($log->properties && isset($log->properties['attributes']))
                                             @php
                                                 $changes = collect($log->properties['attributes'])->take(3);
@@ -401,7 +401,7 @@
                                             <span class="text-sm text-gray-500">No specific changes recorded</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4">
+                                    <td class="px-2 py-4">
                                         <div class="text-sm font-medium text-gray-900">{{ $log->created_at->format('M d, Y') }}</div>
                                         <div class="text-sm text-gray-500">{{ $log->created_at->format('h:i:s A') }}</div>
                                     </td>
