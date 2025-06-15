@@ -111,7 +111,7 @@
     @if($showModal)
         <div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
              wire:click.self="closeModal">
-            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            <div class="p-4 border bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                  wire:click.stop>
 
                 <!-- Modal Header -->
@@ -242,7 +242,7 @@
                 </div>
 
                 <!-- Modal Footer -->
-                <div class="border-t p-6 flex justify-end gap-3">
+                <div class="mt-4 p-6 flex justify-end gap-3">
                     <button wire:click="closeModal" class="btn btn-light">
                         Cancel
                     </button>

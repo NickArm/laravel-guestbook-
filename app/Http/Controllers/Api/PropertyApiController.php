@@ -69,8 +69,12 @@ class PropertyApiController extends Controller
                     'description' => $appliance->description,
                     'video_url' => $appliance->video_url,
                     'images' => $appliance->images->pluck('url')->toArray(),
-                ]), // 👈 Added appliances section
-                'before_you_go' => $property->beforeYouGo?->content,
+                ]),
+                'before_you_go' => $property->beforeYouGoNotes->map(fn ($note) => [
+                    'id' => $note->id,
+                    'content' => $note->content,
+                ]),
+
                 'recommendations' => $property->recommendations->map(fn ($rec) => [
                     'id' => $rec->id,
                     'title' => $rec->title,

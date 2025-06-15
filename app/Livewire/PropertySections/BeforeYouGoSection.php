@@ -15,10 +15,10 @@ class BeforeYouGoSection extends Component
 
     public $enabled = false;
 
-    public $content = '';
+    public array $notes = [];
 
     protected $rules = [
-        'content' => 'nullable|string',
+        'notes.*.content' => 'nullable|string|max:2000',
     ];
 
     public function mount(Property $property)
@@ -26,16 +26,10 @@ class BeforeYouGoSection extends Component
         $this->property = $property;
         $this->enabled = $this->isSectionEnabled('before_you_go');
 
-        $beforeYouGo = BeforeYouGo::where('property_id', $property->id)->first();
-        $this->content = old('content', $beforeYouGo->content ?? '');
+        $this->notes = $property->beforeYouGoNotes->map(fn ($note) => ['id' => $note->id, 'content' => $note->content])->toArray();
 
-        $this->dispatch('init-ckeditor-before-you-go');
-    }
-
-    public function updated($propertyName)
-    {
-        if ($propertyName !== 'content') {
-            $this->dispatch('init-ckeditor-before-you-go');
+        if (empty($this->notes)) {
+            $this->notes[] = ['id' => null, 'content' => ''];
         }
     }
 
@@ -44,30 +38,33 @@ class BeforeYouGoSection extends Component
         $this->updateEnabledState('before_you_go', $this->enabled);
     }
 
-    public function save()
+    public function addNote()
     {
-        // Χρήση JavaScript για να πάρουμε το content
-        $this->js('
-            if (CKEDITOR.instances["before_you_go_editor"]) {
-                const content = CKEDITOR.instances["before_you_go_editor"].getData();
-                $wire.set("content", content);
-                $wire.call("performSave");
-            } else {
-                $wire.call("performSave");
-            }
-        ');
+        $this->notes[] = ['id' => null, 'content' => ''];
     }
 
-    public function performSave()
+    public function removeNote($index)
+    {
+        $note = $this->notes[$index];
+        if (! empty($note['id'])) {
+            BeforeYouGo::where('id', $note['id'])->delete();
+        }
+        unset($this->notes[$index]);
+        $this->notes = array_values($this->notes);
+    }
+
+    public function save()
     {
         $this->validate();
 
-        BeforeYouGo::updateOrCreate(
-            ['property_id' => $this->property->id],
-            ['content' => $this->content]
-        );
+        foreach ($this->notes as $note) {
+            BeforeYouGo::updateOrCreate(
+                ['id' => $note['id']],
+                ['property_id' => $this->property->id, 'content' => $note['content']]
+            );
+        }
 
-        session()->flash('message', 'Before You Go updated successfully!');
+        session()->flash('message', 'Before You Go notes saved successfully.');
     }
 
     public function render()

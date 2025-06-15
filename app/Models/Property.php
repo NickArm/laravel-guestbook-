@@ -145,9 +145,9 @@ class Property extends Model
         return $this->hasOne(Review::class);
     }
 
-    public function beforeYouGo()
+    public function beforeYouGoNotes()
     {
-        return $this->hasOne(BeforeYouGo::class);
+        return $this->hasMany(BeforeYouGo::class);
     }
 
     public function recommendations()
