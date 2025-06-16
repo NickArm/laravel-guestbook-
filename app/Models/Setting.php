@@ -13,6 +13,7 @@ class Setting extends Model
         'property_id',
         'primary_color',
         'secondary_color',
+        'blog_url',
     ];
 
     public function property()

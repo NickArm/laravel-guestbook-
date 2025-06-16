@@ -54,6 +54,10 @@ class PropertyApiController extends Controller
                     'question' => $faq->question,
                     'answer' => $faq->answer,
                 ]),
+                'blog' => [
+                    'enabled' => in_array('blog', $property->enabled_pages ?? []),
+                    'url' => $property->settings->blog_url,
+                ],
                 'wifi' => $property->wifi ? [
                     'network' => $property->wifi->network,
                     'password' => $property->wifi->password,
