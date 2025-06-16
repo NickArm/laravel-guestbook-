@@ -124,6 +124,8 @@ class SettingsSection extends Component
                 ]
             );
 
+            $this->updateEnabledState('blog', $this->blog_enabled);
+
             session()->flash('success', 'Settings saved successfully!');
 
         } catch (\Exception $e) {
