@@ -229,5 +229,37 @@
                 </div>
             </div>
         </div>
+
+        <!-- GetYourGuide Widget Section -->
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="ki-duotone ki-globe fs-4 text-primary"></i>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900">GetYourGuide Widget</h4>
+                    <p class="text-sm text-gray-600">Paste your custom GYG widget code to embed activities directly into your guest page</p>
+                </div>
+            </div>
+
+            <div class="grid gap-6 p-6">
+                    <div class="space-y-3">
+                        <textarea wire:model.defer="gyg_widget_code"
+                                rows="16"
+                                class="form-control font-mono text-xs leading-snug w-full p-4"
+                                placeholder='<div data-gyg-href="https://widget.getyourguide.com/..."></div>'></textarea>
+                        @error('gyg_widget_code')
+                            <div class="text-danger text-sm">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                        <p class="font-medium mb-1">Where will this appear?</p>
+                        <p>This widget will be rendered dynamically on the public guest page of your property, allowing guests to explore and book activities directly.</p>
+                    </div>
+                </div>
+            </div>
+
+
     </div>
 </div>
