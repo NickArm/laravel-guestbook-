@@ -4,11 +4,13 @@ namespace App\Livewire\PropertySections;
 
 use App\Models\Property;
 use App\Models\Setting;
+use App\Traits\EnabledPages;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class SettingsSection extends Component
 {
+    use EnabledPages;
     use WithFileUploads;
 
     public Property $property;
@@ -28,6 +30,12 @@ class SettingsSection extends Component
 
     public $saving = false;
 
+    public ?string $blog_url = null;
+
+    public bool $blog_enabled = false;
+
+    public ?string $gyg_widget_code = null;
+
     public function mount(Property $property)
     {
         $this->property = $property;
@@ -38,6 +46,9 @@ class SettingsSection extends Component
         if ($settings) {
             $this->primary_color = $settings->primary_color ?? '#3b82f6';
             $this->secondary_color = $settings->secondary_color ?? '#6b7280';
+            $this->blog_url = $property->settings->blog_url;
+            $this->blog_enabled = $this->isSectionEnabled('blog');
+            $this->gyg_widget_code = $property->settings->gyg_widget_code;
         }
     }
 
@@ -96,6 +107,8 @@ class SettingsSection extends Component
         $this->validate([
             'primary_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
             'secondary_color' => 'required|string|regex:/^#[0-9A-Fa-f]{6}$/',
+            'blog_url' => 'nullable|url',
+            'gyg_widget_code' => 'nullable|string|max:10000',
         ]);
 
         $this->saving = true;
@@ -106,6 +119,8 @@ class SettingsSection extends Component
                 [
                     'primary_color' => $this->primary_color,
                     'secondary_color' => $this->secondary_color,
+                    'blog_url' => $this->blog_url,
+                    'gyg_widget_code' => $this->gyg_widget_code,
                 ]
             );
 

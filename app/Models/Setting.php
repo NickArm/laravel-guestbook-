@@ -13,6 +13,8 @@ class Setting extends Model
         'property_id',
         'primary_color',
         'secondary_color',
+        'blog_url',
+        'gyg_widget_code',
     ];
 
     public function property()

@@ -129,7 +129,7 @@
                                        {{ $activeSection === 'settings' ? 'bg-secondary-active text-primary font-medium' : 'text-gray-800 hover:text-primary hover:font-medium' }}">
                             <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4
                                          {{ $activeSection === 'settings' ? 'before:bg-primary' : '' }}"></span>
-                            Branding
+                            Branding & Settings
                         </button>
                     </div>
                 </div>

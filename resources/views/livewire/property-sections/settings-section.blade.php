@@ -36,7 +36,7 @@
         @endif
 
         <!-- Logo Upload Section -->
-        <div class="border-b border-gray-200 p-6">
+        <div class="border-b border-gray-200 p-4">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <i class="ki-duotone ki-picture fs-4 text-primary"></i>
@@ -134,7 +134,7 @@
         </div>
 
         <!-- Color Settings Section -->
-        <div class="p-6">
+        <div class="p-4">
             <div class="flex items-center gap-3 mb-6">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <i class="ki-duotone ki-color-swatch fs-4 text-primary"></i>
@@ -202,5 +202,64 @@
                 </div>
             </div>
         </div>
+
+        <!-- Blog Settings -->
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="ki-duotone ki-blog fs-4 text-primary"></i>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900">Blog Integration</h4>
+                    <p class="text-sm text-gray-600">Control blog feed visibility and source</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-6 p-8">
+                <div class="space-y-3">
+                    <label class="form-label">Blog Feed URL</label>
+                    <input type="text" wire:model.defer="blog_url" class="form-control" placeholder="https://yourdomain.com/wp-json/wp/v2/posts?...">
+                    @error('blog_url') <span class="text-danger text-sm">{{ $message }}</span> @enderror
+                </div>
+                <div class="flex items-center gap-4">
+                    <label class="switch">
+                        <input type="checkbox" wire:model.live="blog_enabled">
+                        <span class="switch-label">Enabled</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- GetYourGuide Widget Section -->
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="ki-duotone ki-globe fs-4 text-primary"></i>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900">GetYourGuide Widget</h4>
+                    <p class="text-sm text-gray-600">Paste your custom GYG widget code to embed activities directly into your guest page</p>
+                </div>
+            </div>
+
+            <div class="grid gap-6 p-6">
+                    <div class="space-y-3">
+                        <textarea wire:model.defer="gyg_widget_code"
+                                rows="16"
+                                class="form-control font-mono text-xs leading-snug w-full p-4"
+                                placeholder='<div data-gyg-href="https://widget.getyourguide.com/..."></div>'></textarea>
+                        @error('gyg_widget_code')
+                            <div class="text-danger text-sm">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                        <p class="font-medium mb-1">Where will this appear?</p>
+                        <p>This widget will be rendered dynamically on the public guest page of your property, allowing guests to explore and book activities directly.</p>
+                    </div>
+                </div>
+            </div>
+
+
     </div>
 </div>
