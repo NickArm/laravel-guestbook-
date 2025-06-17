@@ -1,3 +1,17 @@
+## v0.8.4 (2025-06-17)
+### Added
+- Review section toggle added: Admins can now enable/disable the Review section via switch, affecting the enabled_pages array.
+- Redesigned ReviewSection UI with improved input styling and layout.
+- AppliancePage now displays "More Appliances" section below the selected appliance.
+- Bottom navigation active highlighting removed for simplified styling.
+- Appliance button list redesigned with primary color border and arrow icon to indicate interactivity.
+
+### Fixed / Improved
+- Fixed missing bottom navigation bar display on certain routes.
+- PWA manifest updated to include complete icon set from public/icons for broader device compatibility.
+- App logo issues resolved with better handling of logo path and Cloudinary optimization.
+- General UI spacing and structure improvements across property sections.
+
 ## v0.8.3 (2025-06-16)
 
 ### ✨ Added
