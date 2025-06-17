@@ -62,7 +62,7 @@
             <label class="form-label max-w-56">Location Description</label>
             <div class="grow">
                 <textarea wire:model="location_description"
-                          class="input @error('location_description') border-red-500 @enderror"
+                          class="h-40 input @error('location_description') border-red-500 @enderror"
                           rows="4"
                           placeholder="A beautiful apartment near Corfu..."></textarea>
                 @error('location_description')
