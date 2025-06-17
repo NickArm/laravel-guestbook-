@@ -218,7 +218,7 @@
             <div class="grid lg:grid-cols-2 gap-6 p-8">
                 <div class="space-y-3">
                     <label class="form-label">Blog Feed URL</label>
-                    <input type="text" wire:model.defer="blog_url" class="form-control" placeholder="https://yourdomain.com/wp-json/wp/v2/posts?...">
+                    <input type="text" wire:model.defer="blog_url" class="input form-control" placeholder="https://yourdomain.com/wp-json/wp/v2/posts?...">
                     @error('blog_url') <span class="text-danger text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex items-center gap-4">
@@ -245,8 +245,8 @@
             <div class="grid gap-6 p-6">
                     <div class="space-y-3">
                         <textarea wire:model.defer="gyg_widget_code"
-                                rows="16"
-                                class="form-control font-mono text-xs leading-snug w-full p-4"
+                                rows="32"
+                                class="input form-control font-mono text-xs leading-snug w-full p-4 h-40"
                                 placeholder='<div data-gyg-href="https://widget.getyourguide.com/..."></div>'></textarea>
                         @error('gyg_widget_code')
                             <div class="text-danger text-sm">{{ $message }}</div>
