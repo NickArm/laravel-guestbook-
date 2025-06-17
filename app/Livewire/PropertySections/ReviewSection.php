@@ -11,7 +11,8 @@ class ReviewSection extends Component
 
     public $review;
 
-    // Form fields
+    public $enabled = false;
+
     public $description = '';
 
     public $url = '';
@@ -32,7 +33,30 @@ class ReviewSection extends Component
     public function mount($property)
     {
         $this->property = $property;
+        $this->enabled = in_array('review', $this->property->enabled_pages ?? []);
         $this->loadReview();
+    }
+
+    public function toggleEnabled()
+    {
+        if (! $this->property) {
+            return;
+        }
+
+        $enabledPages = $this->property->enabled_pages ?? [];
+
+        if ($this->enabled) {
+            // Προσθήκη
+            if (! in_array('review', $enabledPages)) {
+                $enabledPages[] = 'review';
+            }
+        } else {
+            // Αφαίρεση
+            $enabledPages = array_filter($enabledPages, fn ($page) => $page !== 'review');
+        }
+
+        $this->property->enabled_pages = array_values($enabledPages);
+        $this->property->save();
     }
 
     public function loadReview()

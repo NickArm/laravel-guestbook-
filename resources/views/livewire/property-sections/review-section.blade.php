@@ -1,8 +1,13 @@
-<!-- resources/views/livewire/property-sections/review-section.blade.php -->
 <div class="card">
-    <div class="card-header">
+    <div class="card-header flex justify-between items-center">
         <h3 class="card-title">Review Link</h3>
-        <div class="flex items-center gap-3">
+
+        <div class="flex items-center gap-4">
+            <label class="switch">
+                <input type="checkbox" wire:model="enabled" wire:click="toggleEnabled">
+                <span class="switch-label">Enabled</span>
+            </label>
+
             <button wire:click="save"
                     class="btn btn-sm btn-primary"
                     wire:loading.attr="disabled"
@@ -20,7 +25,6 @@
     </div>
 
     <div class="card-body p-0">
-        <!-- Flash Messages -->
         @if (session()->has('success'))
             <div class="alert alert-success mx-6 mt-6">
                 <i class="ki-duotone ki-check-circle fs-4 me-2"></i>
@@ -36,37 +40,39 @@
         @endif
 
         <div class="p-8 space-y-6">
-            <!-- Description -->
-            <div>
-                <label class="form-label required text-sm font-medium">Review Link Description</label>
-                <input type="text"
-                       wire:model="description"
-                       class="form-control"
-                       placeholder="e.g., Leave us a review on Airbnb">
+            <!-- Description Field -->
+            <div class="mb-8">
+                <label class="form-label required text-sm font-medium mb-1 block">Review Link Description</label>
+                <div class="relative">
+                    <input type="text"
+                           wire:model="description"
+                           class="form-control bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary focus:border-primary w-full p-3"
+                           placeholder="e.g., Leave us a review on Airbnb">
+                </div>
                 @error('description')
-                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                    <p class="text-danger text-sm mt-1">{{ $message }}</p>
                 @enderror
-                <div class="text-xs text-gray-500 mt-1">
+                <p class="text-xs text-gray-500 mt-1">
                     This text will be displayed to guests as a call-to-action
-                </div>
+                </p>
             </div>
 
-            <!-- URL -->
+            <!-- URL Field -->
             <div>
-                <label class="form-label required text-sm font-medium">Review URL</label>
-                <input type="url"
-                       wire:model="url"
-                       class="form-control"
-                       placeholder="https://www.airbnb.com/rooms/12345/reviews">
-                @error('url')
-                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
-                @enderror
-                <div class="text-xs text-gray-500 mt-1">
-                    Direct link where guests can leave a review (Airbnb, Booking.com, etc.)
+                <label class="form-label required text-sm font-medium mb-1 block">Review URL</label>
+                <div class="relative">
+                    <input type="url"
+                           wire:model="url"
+                           class="form-control bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary focus:border-primary w-full p-3"
+                           placeholder="https://www.airbnb.com/rooms/12345/reviews">
                 </div>
+                @error('url')
+                    <p class="text-danger text-sm mt-1">{{ $message }}</p>
+                @enderror
+                <p class="text-xs text-gray-500 mt-1">
+                    Direct link where guests can leave a review (Airbnb, Booking.com, etc.)
+                </p>
             </div>
-
-
         </div>
     </div>
 </div>
