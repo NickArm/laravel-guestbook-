@@ -54,7 +54,7 @@
 
     @if($showModal)
 <div wire:ignore.self class="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center p-8" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] p-4">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">{{ $editingId ? 'Edit FAQ' : 'Add FAQ' }}</h3>
             <button wire:click="closeModal" class="btn btn-sm btn-circle btn-ghost">✕</button>
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="mt-6 flex justify-end gap-2">
+        <div class="mt-4 flex justify-end gap-2">
             <button wire:click="closeModal" class="btn btn-ghost">Cancel</button>
             <button wire:click="save" class="btn btn-primary" wire:loading.attr="disabled">
                 <span wire:loading.remove>{{ $editingId ? 'Update' : 'Add' }}</span>

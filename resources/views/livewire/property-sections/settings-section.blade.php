@@ -84,7 +84,7 @@
                         <input type="file"
                                wire:model="logo"
                                accept="image/*"
-                               class="form-control">
+                               class="form-control mb-2">
 
                         @error('logo')
                             <div class="text-danger text-sm">{{ $message }}</div>

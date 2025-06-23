@@ -35,10 +35,13 @@
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <label class="form-label max-w-56">Check In Instructions</label>
                     <div class="grow">
-                        <textarea wire:model="check_in_instructions"
-                                  class="input @error('check_in_instructions') border-red-500 @enderror"
-                                  rows="4"
-                                  placeholder="Check in instructions for guests"></textarea>
+                        <textarea
+                        wire:model="check_in_instructions"
+                        rows="4"
+                        placeholder="Check-in instructions for guests"
+                        class="w-full min-h-[120px] bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary focus:border-primary p-4 pt-5 @error('check_in_instructions') border-red-500 @enderror"
+                        ></textarea>
+
                         @error('check_in_instructions')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -68,10 +71,12 @@
                 <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                     <label class="form-label max-w-56">Check Out Instructions</label>
                     <div class="grow">
-                        <textarea wire:model="check_out_instructions"
-                                  class="input @error('check_out_instructions') border-red-500 @enderror"
-                                  rows="4"
-                                  placeholder="Check out instructions for guests"></textarea>
+                        <textarea
+                        wire:model="check_out_instructions"
+                        rows="4"
+                        placeholder="Check-out instructions for guests"
+                        class="w-full min-h-[120px] bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary focus:border-primary p-4 pt-5 @error('check_out_instructions') border-red-500 @enderror"
+                        ></textarea>
                         @error('check_out_instructions')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror

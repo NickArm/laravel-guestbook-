@@ -62,7 +62,12 @@
         <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <label class="form-label max-w-56">Welcome Message</label>
             <div class="grow">
-                <textarea wire:model="welcome_message" class="input" rows="4" placeholder="Welcome message for guests"></textarea>
+                <textarea
+                    wire:model="welcome_message"
+                    rows="4"
+                    placeholder="Welcome message for guests"
+                    class="w-full min-h-[120px] bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-primary focus:border-primary p-4 pt-5"
+                    ></textarea>
                 @error('welcome_message')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
