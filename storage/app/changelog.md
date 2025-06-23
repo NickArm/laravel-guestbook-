@@ -1,12 +1,14 @@
-## v0.8.4 (2025-06-23)
+## v0.8.5 (2025-06-23)
+- Several Design Fixes (https://github.com/NickArm/laravel-guestbook-/commit/111f769c55a8eaeda61f191117841d8fcd5b8c6c)
+- Added URL at Transportation Section (https://github.com/NickArm/laravel-guestbook-/commit/afee382796249d663daf0a3fb0b8916512399312)
+
+## v0.8.4 (2025-06-17)
 ### Added
 - Review section toggle added: Admins can now enable/disable the Review section via switch, affecting the enabled_pages array.
 - Redesigned ReviewSection UI with improved input styling and layout.
 - AppliancePage now displays "More Appliances" section below the selected appliance.
 - Bottom navigation active highlighting removed for simplified styling.
 - Appliance button list redesigned with primary color border and arrow icon to indicate interactivity.
-- Several Design Fixes (https://github.com/NickArm/laravel-guestbook-/commit/111f769c55a8eaeda61f191117841d8fcd5b8c6c)
-- Added URL at Transportation Section (https://github.com/NickArm/laravel-guestbook-/commit/afee382796249d663daf0a3fb0b8916512399312)
 
 ### Fixed / Improved
 - Fixed missing bottom navigation bar display on certain routes.
