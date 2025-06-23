@@ -54,6 +54,19 @@
                             💡 Include phone numbers, costs, booking instructions, or any other helpful details.
                         </div>
                     </div>
+                     <div style="margin-bottom: 15px;">
+                        <label class="display: block; margin-bottom: 8px; font-weight: 600; color: #555;">Link / URL (optional)</label>
+                        <input wire:model="url"
+                            class="input w-full @error('url') border-red-500 @enderror"
+                            type="url"
+                            placeholder="https://example.com/timetable-or-more-info">
+                        @error('url')
+                            <span class="color: #dc3545; font-size: 12px; margin-top: 5px;">{{ $message }}</span>
+                        @enderror
+                        <div style="color: #6c757d; font-size: 12px; margin-top: 5px;">
+                            💡 Include a link for more information or booking (e.g. timetable, taxi website).
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Footer -->
@@ -92,6 +105,14 @@
                                 <div class="text-gray-600 leading-relaxed">
                                     {{ $transport->description }}
                                 </div>
+                                @if($transport->url)
+                                    <div class="mt-2">
+                                        <a href="{{ $transport->url }}" target="_blank" class="text-blue-600 underline text-sm">
+                                            🔗 More Info
+                                        </a>
+                                    </div>
+                                @endif
+
                             </div>
 
                             <div class="flex gap-2 ml-4 flex-shrink-0">
@@ -168,6 +189,19 @@
                         @enderror
                         <div class="text-sm text-gray-500 mt-1">
                             Include phone numbers, costs, booking instructions, or any other helpful details.
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">Link / URL (optional)</label>
+                        <input wire:model="url"
+                            class="input w-full @error('url') border-red-500 @enderror"
+                            type="url"
+                            placeholder="https://example.com/timetable-or-more-info">
+                        @error('url')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                        <div class="text-sm text-gray-500 mt-1">
+                            Include a link for more information or booking (e.g. timetable, taxi website).
                         </div>
                     </div>
                 </div>

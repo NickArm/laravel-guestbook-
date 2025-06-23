@@ -3,7 +3,6 @@
 namespace App\Livewire\PropertySections;
 
 use App\Models\Property;
-use App\Models\Transportation;
 use App\Traits\EnabledPages;
 use Livewire\Component;
 
@@ -19,15 +18,17 @@ class TransportationSection extends Component
 
     public $editingId = null;
 
-    // Modal form fields
     public $title = '';
 
     public $description = '';
+
+    public $url = '';
 
     protected $rules = [
         'enabled' => 'boolean',
         'title' => 'required|string|max:255',
         'description' => 'required|string|max:1000',
+        'url' => 'nullable|url|max:500',
     ];
 
     public function mount(Property $property)
@@ -84,15 +85,15 @@ class TransportationSection extends Component
         $data = [
             'title' => $this->title,
             'description' => $this->description,
+            'url' => $this->url,
             'property_id' => $this->property->id,
+
         ];
 
         if ($this->editingId) {
-            // Update existing transportation
             $this->property->transportation()->where('id', $this->editingId)->update($data);
             $message = 'Transportation updated successfully!';
         } else {
-            // Create new transportation
             $this->property->transportation()->create($data);
             $message = 'Transportation added successfully!';
         }

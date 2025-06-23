@@ -67,6 +67,7 @@ class PropertyApiController extends Controller
                 'transportation' => $property->transportation->map(fn ($t) => [
                     'title' => $t->title,
                     'description' => $t->description,
+                    'url' => $t->url,
                 ]),
                 'appliances' => $property->appliances->map(fn ($appliance) => [
                     'id' => $appliance->id,
