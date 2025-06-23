@@ -75,6 +75,7 @@ class TransportationSection extends Component
         $this->editingId = $transportationId;
         $this->title = $transportation->title;
         $this->description = $transportation->description;
+        $this->url = $transportation->url;
         $this->showModal = true;
     }
 
