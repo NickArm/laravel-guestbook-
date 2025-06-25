@@ -114,6 +114,13 @@
                                             </div>
                                             <div class="menu-separator"></div>
                                             <div class="menu-item">
+                                            <a class="menu-link" href="{{ route('properties.pdf', $property) }}" target="_blank">
+                                                <span class="menu-icon"><i class="ki-filled ki-book-square"></i></span>
+                                                <span class="menu-title">PDF Preview (Beta)</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-separator"></div>
+                                            <div class="menu-item">
                                                 <form method="POST" action="{{ route('properties.destroy', $property) }}"
                                                     onsubmit="return confirm('Are you sure you want to delete this property?');">
                                                     @csrf
@@ -124,6 +131,7 @@
                                                     </button>
                                                 </form>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>

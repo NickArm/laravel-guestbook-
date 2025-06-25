@@ -16,7 +16,7 @@ class PropertyApiController extends Controller
             'transportation',
             'images',
             'recommendations.category',
-            'appliances.images', // 👈 Added appliances with images
+            'appliances.images',
         ])->where('slug', $slug)->firstOrFail();
 
         $user = $property->user;
@@ -31,7 +31,7 @@ class PropertyApiController extends Controller
                 'slug' => $property->slug,
                 'name' => $property->name,
                 'logo_url' => $property->logo_url,
-                'gallery' => $property->images->pluck('url')->toArray(), // 👈 This is the gallery
+                'gallery' => $property->images->pluck('url')->toArray(),
                 'enabled_pages' => $property->enabled_pages,
                 'address' => $property->address,
                 'property_directions' => $property->property_directions,

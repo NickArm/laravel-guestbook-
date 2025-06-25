@@ -36,6 +36,10 @@
                             @csrf @method('DELETE')
                             <button class="text-red-500">Delete</button>
                         </form>
+
+                        <a href="{{ route('properties.pdf', $property) }}" target="_blank" class="text-purple-600 hover:underline">
+                            PDF Preview
+                        </a>
                     </td>
                 </tr>
             @endforeach

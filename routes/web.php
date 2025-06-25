@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\PropertyPdfController;
 use App\Http\Controllers\RecommendationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,8 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/{property}/toggle', [PropertyController::class, 'toggleActive'])->name('toggle');
     });
     Route::delete('/properties/{property}/images/{image}', [PropertyController::class, 'deleteImage'])->name('properties.image.delete');
+    Route::get('/properties/{property}/pdf-preview', [PropertyPdfController::class, 'generate'])->name('properties.pdf');
+    Route::get('/property/{property}/preview', [PropertyPdfController::class, 'preview'])->name('property.preview');
 
     Route::get('/recommendations', [RecommendationController::class, 'index'])->name('recommendations.index');
     Route::get('/recommendations/create', [RecommendationController::class, 'create'])->name('recommendations.create');
