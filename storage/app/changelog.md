@@ -1,3 +1,12 @@
+## v0.8.7 (2025-06-30)
+- Add Host Section with full support for:
+  - Name, Photo (Cloudinary Upload)
+  - Welcome Message
+  - Contact Methods (WhatsApp, Viber, Instagram, etc.)
+  - Enable/Disable via `enabled_pages`
+- Added support for Cloudinary `public_id` column in `hosts` table
+- Integrated `HostSection` into API response
+
 ## v0.8.6 (2025-06-23)
 - Fix Url on Edit Modal (https://github.com/NickArm/laravel-guestbook-/commit/b76155777f1e910198774158bd5ca12e25948835)
 

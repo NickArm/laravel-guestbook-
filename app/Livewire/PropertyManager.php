@@ -27,6 +27,7 @@ class PropertyManager extends Component
         'transportation',
         'rules',
         'faq',
+        'host',
         'gallery',
         'review',
         'before-you-go',
