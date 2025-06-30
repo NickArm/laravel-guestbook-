@@ -30,11 +30,8 @@ class HomeSection extends Component
             'welcome_title' => 'required|string|max:255',
             'welcome_message' => 'required|string|max:2000',
             'property_directions' => 'nullable|url|max:500',
+            'slug' => 'required|string|regex:/^[a-z0-9\-]*$/',
         ];
-
-        if (! $this->property || ! $this->property->exists) {
-            $rules['slug'] = 'nullable|string|regex:/^[a-z0-9\-]*$/|unique:properties,slug';
-        }
 
         return $rules;
     }
@@ -80,15 +77,15 @@ class HomeSection extends Component
 
         try {
             if ($this->property && $this->property->exists) {
-                $updateData = [
-                    'name' => $this->name,
-                    'address' => $this->address,
-                    'welcome_title' => $this->welcome_title,
-                    'property_directions' => $this->property_directions,
-                    'welcome_message' => $this->welcome_message,
-                ];
 
-                $this->property->update($updateData);
+                $this->property->slug = $this->slug;
+                $this->property->name = $this->name;
+                $this->property->address = $this->address;
+                $this->property->welcome_title = $this->welcome_title;
+                $this->property->property_directions = $this->property_directions;
+                $this->property->welcome_message = $this->welcome_message;
+
+                $this->property->save();
                 $this->property->refresh();
 
                 session()->flash('success', 'Home section updated successfully!');

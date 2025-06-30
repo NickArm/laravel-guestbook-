@@ -159,4 +159,9 @@ class Property extends Model
     {
         return $this->hasMany(Appliance::class);
     }
+
+    public function host()
+    {
+        return $this->hasOne(Host::class);
+    }
 }

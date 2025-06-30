@@ -17,6 +17,7 @@ class PropertyApiController extends Controller
             'images',
             'recommendations.category',
             'appliances.images',
+            'host',
         ])->where('slug', $slug)->firstOrFail();
 
         $user = $property->user;
@@ -125,6 +126,41 @@ class PropertyApiController extends Controller
                         ];
                     })->values(),
                 ],
+                'host' => $property->host ? [
+                    'name' => $property->host->name,
+                    'photo' => $property->host->photo,
+                    'message' => $property->host->message,
+                    'contacts' => collect($property->host->contacts)->map(function ($contact) {
+                        $icons = [
+                            'instagram' => 'fa-brands fa-instagram',
+                            'email' => 'fa-solid fa-envelope',
+                            'phone' => 'fa-solid fa-phone',
+                            'whatsapp' => 'fa-brands fa-whatsapp',
+                            'viber' => 'fa-brands fa-viber',
+                            'website' => 'fa-solid fa-globe',
+                        ];
+
+                        $colors = [
+                            'whatsapp' => 'text-green-500',
+                            'viber' => 'text-purple-500',
+                        ];
+
+                        return [
+                            'type' => $contact['type'] ?? '',
+                            'value' => $contact['value'] ?? '',
+                            'icon' => $icons[$contact['type']] ?? 'fa-solid fa-circle',
+                            'url' => $contact['url'] ?? match ($contact['type'] ?? '') {
+                                'whatsapp' => 'https://wa.me/'.preg_replace('/\D/', '', $contact['value']),
+                                'viber' => 'viber://chat?number='.preg_replace('/\D/', '', $contact['value']),
+                                'email' => 'mailto:'.$contact['value'],
+                                'website' => 'https://'.ltrim($contact['value'], 'https://'),
+                                default => null,
+                            },
+                            'color' => $colors[$contact['type']] ?? null,
+                        ];
+                    })->values(),
+                ] : null,
+
                 'review' => $property->review ? [
                     'description' => $property->review->description,
                     'url' => $property->review->url,

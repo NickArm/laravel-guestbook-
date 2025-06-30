@@ -87,6 +87,15 @@
                             FAQs
                         </button>
 
+                         <!-- Host Section -->
+                        <button wire:click="setActiveSection('host')"
+                                class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm
+                                       {{ $activeSection === 'host' ? 'bg-secondary-active text-primary font-medium' : 'text-gray-800 hover:text-primary hover:font-medium' }}">
+                            <span class="flex w-1.5 relative before:absolute before:top-0 before:size-1.5 before:rounded-full before:-translate-x-2/4 before:-translate-y-2/4
+                                         {{ $activeSection === 'host' ? 'before:bg-primary' : '' }}"></span>
+                            Host
+                        </button>
+
                         <!-- Gallery Section -->
                         <button wire:click="setActiveSection('gallery')"
                                 class="flex items-center rounded-lg pl-2.5 pr-2.5 py-2.5 gap-1.5 border border-transparent text-2sm
@@ -174,9 +183,14 @@
                     @livewire('property-sections.rules-section', ['property' => $property], key('rules-'.($property->id ?? 'new')))
                 @endif
 
-                <!-- FAQs Section -->
+                 <!-- FAQs Section -->
                 @if($activeSection === 'faq')
                     @livewire('property-sections.faq-section', ['property' => $property], key('faq-'.($property->id ?? 'new')))
+                @endif
+
+                <!-- Host Section -->
+                @if($activeSection === 'host')
+                    @livewire('property-sections.host-section', ['property' => $property], key('host-'.($property->id ?? 'new')))
                 @endif
 
                 <!-- Gallery Section -->
