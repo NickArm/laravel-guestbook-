@@ -27,6 +27,16 @@ class HostSection extends Component
 
     public $contacts = [];
 
+    protected $rules = [
+        'enabled' => 'boolean',
+        'name' => 'required|string|max:255',
+        'photoFile' => 'nullable|image|max:2048',
+        'message' => 'nullable|string|max:2000',
+        'contacts' => 'nullable|array',
+        'contacts.*.type' => 'required_with:contacts.*.value|string|max:50',
+        'contacts.*.value' => 'required_with:contacts.*.type|string|max:255',
+    ];
+
     public function mount(Property $property)
     {
         $this->property = $property;
