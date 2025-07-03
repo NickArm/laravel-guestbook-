@@ -1,3 +1,26 @@
+## v0.8.8 (2025-07-05)
+
+### ✨ Added
+- **Checkflow Model & Section**: (https://github.com/NickArm/laravel-guestbook-/commit/156292024c9c1592037f35be2e142cf4cef0736c)
+  - Moved `checkin`, `checkin_instructions`, `checkout`, `checkout_instructions` fields from the `properties` table into a new `Checkflow` model.
+  - Added two new fields: `checkin_video` and `checkout_video`, with YouTube URL validation.
+  - Implemented full Livewire component (`CheckinSection`) with preview, validation, and enable/disable toggle.
+  - API response updated to include `checkin_video` and `checkout_video`.
+
+- **Change Owner Functionality**: (https://github.com/NickArm/laravel-guestbook-/commit/b90800788f117ed88ec404fc99909f54d18a550c)
+  - Added owner dropdown per property (only visible to Superadmins).
+  - Includes confirmation popup before ownership transfer.
+  - On change:
+    - Validates that new user is active and within allowed property limit.
+    - Automatically detaches all recommendations from the property.
+    - Other related data (gallery, settings, host, appliances, etc.) remain unchanged.
+
+### Fixed / Improved
+- Improved UX on owner dropdown: now opens immediately on click (no need to hold mouse).
+- `PropertyApiController` now pulls `checkin/checkout` data from `checkflow` instead of `property`.
+- Removed legacy `checkin`, `checkout`, `checkin_instructions`, `checkout_instructions` fields from `Property` model.
+
+
 ## v0.8.7 (2025-06-30)
 - Add Host Section with full support for:
   - Name, Photo (Cloudinary Upload)
