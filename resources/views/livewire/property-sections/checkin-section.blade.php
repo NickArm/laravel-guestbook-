@@ -47,6 +47,15 @@
                         @enderror
                     </div>
                 </div>
+
+                 <!-- Video -->
+                <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                    <label class="form-label max-w-56">Check In Video URL</label>
+                    <div class="grow">
+                        <input wire:model="checkin_video" class="input @error('checkin_video') border-red-500 @enderror" type="url" placeholder="https://www.youtube.com/watch?v=...">
+                        @error('checkin_video')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -82,39 +91,16 @@
                         @enderror
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Preview when enabled -->
-        @if($enabled)
-            <div class="border rounded p-4 bg-gray-50">
-                <h4 class="text-lg font-semibold mb-4">Preview</h4>
-                <div class="grid gap-4">
-                    @if($check_in_time || $check_in_instructions)
-                        <div>
-                            <h5 class="font-medium mb-2">Check In</h5>
-                            @if($check_in_time)
-                                <p class="text-sm"><strong>Time:</strong> {{ $check_in_time }}</p>
-                            @endif
-                            @if($check_in_instructions)
-                                <p class="text-sm mt-2">{{ $check_in_instructions }}</p>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if($check_out_time || $check_out_instructions)
-                        <div>
-                            <h5 class="font-medium mb-2">Check Out</h5>
-                            @if($check_out_time)
-                                <p class="text-sm"><strong>Time:</strong> {{ $check_out_time }}</p>
-                            @endif
-                            @if($check_out_instructions)
-                                <p class="text-sm mt-2">{{ $check_out_instructions }}</p>
-                            @endif
-                        </div>
-                    @endif
+                <!-- Video -->
+                <div class="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                    <label class="form-label max-w-56">Check Out Video URL</label>
+                    <div class="grow">
+                        <input wire:model="checkout_video" class="input @error('checkout_video') border-red-500 @enderror" type="url" placeholder="https://www.youtube.com/watch?v=...">
+                        @error('checkout_video')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
                 </div>
             </div>
-        @endif
+        </div>
     </div>
 </div>

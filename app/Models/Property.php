@@ -22,10 +22,6 @@ class Property extends Model
         'enabled_pages',
         'is_active',
         'user_id',
-        'checkin',
-        'checkin_instructions',
-        'checkout',
-        'checkout_instructions',
         'welcome_title',
         'welcome_message',
         'amenities_description',
@@ -163,5 +159,10 @@ class Property extends Model
     public function host()
     {
         return $this->hasOne(Host::class);
+    }
+
+    public function checkflow()
+    {
+        return $this->hasOne(Checkflow::class);
     }
 }
