@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\UserActivated;
 use App\Mail\UserDeactivated;
+use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,9 +18,11 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')->get();
-        $activities = Activity::latest()->take(20)->get(); // ή βάλε ->whereNotNull('causer_id') αν θες μόνο με χρήστη
+        $activities = Activity::latest()->take(20)->get();
+        $properties = Property::with('user')->get();
+        $availableOwners = User::where('is_active', true)->get();
 
-        return view('admin.users.index', compact('users', 'activities'));
+        return view('admin.users.index', compact('users', 'activities', 'properties', 'availableOwners'));
     }
 
     public function create()
@@ -94,5 +97,38 @@ class UserController extends Controller
         $user->save();
 
         return back()->with('success', 'User status updated.');
+    }
+
+    public function transferOwnership(Request $request, Property $property)
+    {
+        $request->validate([
+            'new_user_id' => 'required|exists:users,id',
+        ]);
+
+        $newUser = User::findOrFail($request->new_user_id);
+
+        if (! $newUser->is_active) {
+            return back()->withErrors(['new_user_id' => 'The selected user is not active.']);
+        }
+
+        if ($newUser->properties()->count() >= $newUser->property_limit) {
+            return back()->withErrors(['new_user_id' => 'This user has reached the property limit.']);
+        }
+
+        // Detach Recommendations
+        $property->recommendations()->detach();
+
+        // Change Owner
+        $oldOwner = $property->user_id;
+        $property->user_id = $newUser->id;
+        $property->save();
+
+        activity()
+            ->performedOn($property)
+            ->causedBy(auth()->user())
+            ->withProperties(['old_owner' => $oldOwner, 'new_owner' => $newUser->id])
+            ->log('changed_owner');
+
+        return back()->with('success', 'Property ownership transferred successfully.');
     }
 }

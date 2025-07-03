@@ -18,6 +18,7 @@ class PropertyApiController extends Controller
             'recommendations.category',
             'appliances.images',
             'host',
+            'checkflow',
         ])->where('slug', $slug)->firstOrFail();
 
         $user = $property->user;
@@ -36,10 +37,12 @@ class PropertyApiController extends Controller
                 'enabled_pages' => $property->enabled_pages,
                 'address' => $property->address,
                 'property_directions' => $property->property_directions,
-                'checkin' => $property->checkin,
-                'checkin_instructions' => $property->checkin_instructions,
-                'checkout' => $property->checkout,
-                'checkout_instructions' => $property->checkout_instructions,
+                'checkin' => $property->checkflow?->checkin,
+                'checkin_instructions' => $property->checkflow?->checkin_instructions,
+                'checkout' => $property->checkflow?->checkout,
+                'checkout_instructions' => $property->checkflow?->checkout_instructions,
+                'checkin_video' => $property->checkflow?->checkin_video,
+                'checkout_video' => $property->checkflow?->checkout_video,
                 'welcome_title' => $property->welcome_title,
                 'welcome_message' => $property->welcome_message,
                 'amenities_description' => $property->amenities_description,
