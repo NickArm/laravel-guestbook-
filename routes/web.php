@@ -102,9 +102,8 @@ Route::middleware(['auth', 'is_superadmin'])
         Route::patch('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('toggle');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('update');
-
+        Route::patch('/properties/{property}/change-owner', [UserController::class, 'transferOwnership'])->name('transferOwnership');
     });
-
 /*
 |--------------------------------------------------------------------------
 | Pages Routes

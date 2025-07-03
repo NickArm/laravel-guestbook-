@@ -263,6 +263,73 @@
         </div>
     </div>
 
+
+<!-- Properties Card -->
+<div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-8">
+    <!-- Card Header -->
+    <div class="border-b border-gray-200 px-2 py-4">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+                Properties
+            </h3>
+        </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="p-6">
+        @if ($properties->isEmpty())
+            <p class="text-gray-500">No properties found.</p>
+        @else
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                            <th class="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Owner</th>
+                            <th class="px-2 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($properties as $property)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-2 py-4 text-sm font-medium text-gray-900">{{ $property->name }}</td>
+                                <td class="px-2 py-4 text-sm text-gray-500">{{ $property->slug }}</td>
+                                <td class="px-2 py-4 text-sm text-gray-900">{{ $property->user?->name ?? '—' }}</td>
+                                <td class="px-2 py-4 text-right">
+                                    <div class="relative inline-block text-left">
+                                        <button type="button" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500" data-toggle="dropdown">
+                                            Actions
+                                            <i class="ki-duotone ki-down ml-1">
+                                                <span class="path1"></span>
+                                            </i>
+                                        </button>
+                                        <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10" data-dropdown-menu>
+                                            <div class="py-1">
+                                                <form method="POST" action="{{ route('admin.users.transferOwnership', $property) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <select name="new_user_id" onchange="this.form.submit()" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none">
+                                                        <option value="">Select new owner...</option>
+                                                        @foreach($availableOwners as $owner)
+                                                            <option value="{{ $owner->id }}">{{ $owner->name }} ({{ $owner->email }})</option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+</div>
+
+
     @if ($activities->isNotEmpty())
         <!-- Activity Log Card -->
         <div class="bg-white shadow-sm rounded-lg border border-gray-200">
