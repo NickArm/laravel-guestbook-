@@ -305,11 +305,13 @@
                                             </i>
                                         </button>
                                         <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10" data-dropdown-menu>
-                                            <div class="py-1">
-                                                <form method="POST" action="{{ route('admin.users.transferOwnership', $property) }}">
+                                            <div class="py-1" onclick="event.stopPropagation()">
+                                                <form method="POST" action="{{ route('admin.users.transferOwnership', $property) }}" id="transfer-form-{{ $property->id }}">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <select name="new_user_id" onchange="this.form.submit()" class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none">
+                                                    <select name="new_user_id"
+                                                            class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none"
+                                                            data-transfer-select="{{ $property->id }}">
                                                         <option value="">Select new owner...</option>
                                                         @foreach($availableOwners as $owner)
                                                             <option value="{{ $owner->id }}">{{ $owner->name }} ({{ $owner->email }})</option>
@@ -486,6 +488,22 @@
 
 @push('scripts')
 <script>
+
+document.querySelectorAll('[data-transfer-select]').forEach(select => {
+    select.addEventListener('change', function(e) {
+        if (this.value === '') return;
+
+        const selectedOption = this.options[this.selectedIndex];
+        const newOwnerName = selectedOption.text;
+
+        if (confirm(`Are you sure you want to transfer ownership to ${newOwnerName}?`)) {
+            this.form.submit();
+        } else {
+            this.value = ''; // Reset selection if cancelled
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     // Dropdown functionality
     document.querySelectorAll('[data-toggle="dropdown"]').forEach(button => {
@@ -582,6 +600,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+
 });
 </script>
 @endpush
